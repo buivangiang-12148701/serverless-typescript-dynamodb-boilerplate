@@ -25,37 +25,7 @@ provider:
 package:
   individually: true
 functions:
-  createTodo:
-    handler: src/handler/todos/create-todo.handler
-    iamRoleStatements:
-      - Effect: "Allow"
-        Action:
-          - dynamodb:BatchWriteItem
-        Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/${env:DYNAMODB_TABLE_TODO}"
-    events:
-      - httpApi:
-          path: /todos/create
-          method: post
-          documentation:
-            summary: Create a new todo
-            description: Create a new todo
-            tags:
-              - todos
-            requestBody:
-              description: "A todo information object"
-            requestModels:
-              application/json: "CreateTodoDTO"
-            methodResponses:
-              - statusCode: 200
-                responseBody:
-                  description: "Create a new todo successfully"
-                responseModels:
-                  application/json: "HttpTodoResponseSuccess"
-              - statusCode: 400
-                responseBody:
-                  description: "Validation error"
-                responseModels:
-                  application/json: "HttpTodoResponseError"
+  createTodo: ${file(serverless/lambda/todos/create-todo.yml):createTodo}
 resources:
   Resources:
     todoTable:

@@ -6,23 +6,19 @@ module.exports = {
       default: {
         script: npsUtils.series('nps prepare.chmod', 'nps prepare.after-install'),
         description: "Prepare for local development",
-        hiddenFromHelp: true
       },
       chmod: {
         script: "chmod +x scripts/*.sh",
         description: "Change permission of scripts",
-        hiddenFromHelp: true
       },
       'after-install': {
         script: "./scripts/post-install.sh",
         description: "Run after install",
-        hiddenFromHelp: true
       },
     },
     db: {
       default: 'sls dynamodb start --migrate --stage local',
       description: "Start dynamodb local",
-      hiddenFromHelp: true
     },
     local: {
       default: {
@@ -64,7 +60,6 @@ module.exports = {
       common: {
         script: npsUtils.series('rimraf .webpack', 'rimraf package-lock.json', 'rimraf .webpackCache', 'rimraf .serverless'),
         description: "Clean common files",
-        hiddenFromHelp: true
       },
       cleanExcludeDynamodb: {
         script: npsUtils.series('nps clean.common', 'rimraf node_modules'),
