@@ -23,9 +23,9 @@ export const createTodoMiddleware = (): middy.MiddlewareObj<APIGatewayProxyEvent
             console.log('Step 3.1: NewErrors: ', listValidateError);
             throw listValidateError;
         }
-        console.log('Step 3.2: CreateTodoDto: ')
-        request.context['todo'] = CreateTodoDto.toEntity(request.event.body);
-        console.log('Step 4: request.context: ', request.context['todo']);
+        console.log('Step 3.2: CreateTodoDto: ');
+        (request as {[index: string]:any}).context['todo'] = CreateTodoDto.toEntity(request.event.body);
+        console.log('Step 4: request.context: ', (request as {[index: string]:any}).context['todo']);
         return;
     }
     return {
