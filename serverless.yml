@@ -10,6 +10,7 @@ plugins:
   - serverless-dynamodb-local
   - serverless-offline
 useDotenv: true
+configValidationMode: error
 provider:
   name: aws
   runtime: nodejs16.x

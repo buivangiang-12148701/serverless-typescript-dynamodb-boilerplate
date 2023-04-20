@@ -1,4 +1,5 @@
-const npsUtils = require('nps-utils')
+const npsUtils = require('nps-utils');
+
 module.exports = {
   scripts: {
     test: 'echo "Error: no test specified" && exit 1',
@@ -32,8 +33,8 @@ module.exports = {
     },
     deploy: {
       dev: {
-        script: 'node node_modules/serverless/bin/serverless deploy --verbose --stage dev',
-        description: "Deploy to dev environment",
+        script: npsUtils.series('export AWS_CLIENT_TIMEOUT=1800000', 'node node_modules/serverless/bin/serverless deploy --verbose --stage dev'),
+        description: "Deploy to dev environment with timeout 30 minutes",
       },
       remove: {
         dev: {
