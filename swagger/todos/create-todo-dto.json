@@ -1,0 +1,26 @@
+{
+  "type": "object",
+  "readOnly": true,
+  "additionalProperties": false,
+  "properties": {
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 255,
+      "description": "The title of the todo",
+      "example": "Buy milk"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1000,
+      "description": "The description of the todo",
+      "example": "Buy milk from the store"
+    }
+  },
+  "required": [
+    "description",
+    "title"
+  ],
+  "title": "CreateTodoDTO"
+}

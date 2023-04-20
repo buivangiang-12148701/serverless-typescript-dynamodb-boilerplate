@@ -1,0 +1,206 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Todo API",
+    "description": "Todo API",
+    "version": "1.0.0",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "components": {
+    "schemas": {
+      "CreateTodoDTO": {
+        "type": "object",
+        "readOnly": true,
+        "additionalProperties": false,
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255,
+            "description": "The title of the todo",
+            "example": "Buy milk"
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000,
+            "description": "The description of the todo",
+            "example": "Buy milk from the store"
+          }
+        },
+        "required": [
+          "description",
+          "title"
+        ],
+        "title": "CreateTodoDTO"
+      },
+      "HttpTodoResponseSuccess": {
+        "type": "object",
+        "readOnly": true,
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The HTTP status code of the response.",
+            "example": 200
+          },
+          "success": {
+            "type": "boolean",
+            "description": "Whether the request was successful or not.",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "description": "The message of the response.",
+            "example": "Todo successfully created."
+          }
+        },
+        "required": [
+          "code",
+          "success",
+          "message"
+        ],
+        "title": "HttpTodoResponseSuccess"
+      },
+      "HttpTodoResponseError": {
+        "type": "object",
+        "readOnly": true,
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int64",
+            "description": "HTTP status code",
+            "example": 400
+          },
+          "success": {
+            "type": "boolean",
+            "description": "Indicates if the request was successful",
+            "example": false
+          },
+          "message": {
+            "type": "string",
+            "description": "A message describing the error",
+            "example": "Validation failed"
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "readOnly": true,
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "The name of the error",
+                  "example": "ValidationError"
+                },
+                "type": {
+                  "type": "string",
+                  "description": "The type of the error",
+                  "example": "required"
+                },
+                "message": {
+                  "type": "string",
+                  "description": "The message of the error",
+                  "example": "The property is required"
+                },
+                "expected": {
+                  "type": "string",
+                  "description": "The expected value of the error",
+                  "example": "The expected value"
+                },
+                "actual": {
+                  "type": "string",
+                  "description": "The actual value of the error",
+                  "example": "The actual value"
+                }
+              },
+              "required": [
+                "name",
+                "type",
+                "message"
+              ],
+              "title": "ValidationError"
+            }
+          }
+        },
+        "required": [
+          "code",
+          "success",
+          "message",
+          "errors"
+        ],
+        "title": "HttpTodoResponseError"
+      }
+    }
+  },
+  "paths": {
+    "/todos/create": {
+      "post": {
+        "summary": "Create a new todo",
+        "description": "Create a new todo",
+        "operationId": "aws-node-typescript-api-dev-createTodo",
+        "parameters": [],
+        "tags": [
+          "todos"
+        ],
+        "requestBody": {
+          "description": "A todo information object",
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTodoDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Create a new todo successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpTodoResponseSuccess"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpTodoResponseError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Local server"
+    },
+    {
+      "url": "https://api.example.com",
+      "description": "Development server"
+    },
+    {
+      "url": "https://api.example.com",
+      "description": "Staging server"
+    },
+    {
+      "url": "https://api.example.com",
+      "description": "Production server"
+    }
+  ]
+}

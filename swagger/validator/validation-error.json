@@ -1,0 +1,39 @@
+{
+  "id": "ValidationError",
+  "type": "object",
+  "additionalProperties": false,
+  "readOnly": true,
+  "properties": {
+    "name": {
+        "type": "string",
+        "description": "The name of the error",
+        "example": "ValidationError"
+    },
+    "type": {
+        "type": "string",
+        "description": "The type of the error",
+        "example": "required"
+    },
+    "message": {
+        "type": "string",
+        "description": "The message of the error",
+        "example": "The property is required"
+    },
+    "expected": {
+        "type": "string",
+        "description": "The expected value of the error",
+        "example": "The expected value"
+    },
+    "actual": {
+        "type": "string",
+        "description": "The actual value of the error",
+        "example": "The actual value"
+    }
+  },
+  "required": [
+    "name",
+    "type",
+    "message"
+  ],
+  "title": "ValidationError"
+}

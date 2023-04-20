@@ -1,0 +1,18 @@
+    # package directories
+node_modules
+jspm_packages
+
+# Serverless directories
+.serverless### Serverless template
+# Ignore build directory
+.serverless
+
+.webpack
+.webpackCache
+
+# dynamodb local
+.dynamodb
+
+# ignore intelij
+.idea
+.DS_Store

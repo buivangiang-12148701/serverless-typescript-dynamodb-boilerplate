@@ -1,0 +1,55 @@
+{
+  "name": "aws-node-typescript-api",
+  "version": "1.0.0",
+  "description": "<!-- title: 'AWS Simple HTTP Endpoint example in NodeJS' description: 'This template demonstrates how to make a simple HTTP API with Node.js running on AWS Lambda and API Gateway using the Serverless Framework.' layout: Doc framework: v3 platform: AWS language: nodeJS authorLink: 'https://github.com/serverless' authorName: 'Serverless, inc.' authorAvatar: 'https://avatars1.githubusercontent.com/u/13742415?s=200&v=4' -->",
+  "main": "index.js",
+  "scripts": {
+    "menu": "nps-i",
+    "postinstall": "nps prepare"
+  },
+  "engines" : {
+    "npm" : ">=9.0.0",
+    "node" : ">=16.0.0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.21.4",
+    "@babel/plugin-proposal-class-properties": "^7.18.6",
+    "@babel/plugin-proposal-object-rest-spread": "^7.20.7",
+    "@babel/preset-env": "^7.21.4",
+    "@babel/preset-typescript": "^7.21.4",
+    "@faker-js/faker": "^7.6.0",
+    "@redocly/cli": "^1.0.0-beta.125",
+    "@types/aws-lambda": "^8.10.114",
+    "@types/node": "^18.15.11",
+    "babel-loader": "^9.1.2",
+    "nps": "^5.10.0",
+    "nps-i": "^1.0.2",
+    "nps-utils": "^1.7.0",
+    "patch-package": "^6.5.1",
+    "pm2": "^5.3.0",
+    "rimraf": "^5.0.0",
+    "serverless": "^3.30.1",
+    "serverless-dotenv-plugin": "^6.0.0",
+    "serverless-dynamodb-local": "^0.2.40",
+    "serverless-iam-roles-per-function": "^3.2.0",
+    "serverless-offline": "^12.0.4",
+    "serverless-openapi-documenter": "^0.0.48",
+    "serverless-plugin-dynamodb-autoscaling": "^3.1.0",
+    "serverless-plugin-ifelse": "^1.0.7",
+    "serverless-webpack": "^5.11.0",
+    "typescript": "^5.0.4",
+    "webpack": "^5.79.0",
+    "webpack-node-externals": "^3.0.0"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.312.0",
+    "@aws-sdk/util-dynamodb": "^3.312.0",
+    "@middy/core": "^4.3.1",
+    "@middy/http-json-body-parser": "^4.3.1",
+    "fastest-validator": "^1.16.0",
+    "nanoid": "^3.3.6"
+  }
+}

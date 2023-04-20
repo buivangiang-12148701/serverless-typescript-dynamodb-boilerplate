@@ -1,0 +1,29 @@
+{
+  "type": "object",
+  "readOnly": true,
+  "additionalProperties": false,
+  "properties": {
+    "code": {
+      "type": "integer",
+      "format": "int64",
+      "description": "The HTTP status code of the response.",
+      "example": 200
+    },
+    "success": {
+      "type": "boolean",
+      "description": "Whether the request was successful or not.",
+      "example": true
+    },
+    "message": {
+      "type": "string",
+      "description": "The message of the response.",
+      "example": "Todo successfully created."
+    }
+  },
+  "required": [
+    "code",
+    "success",
+    "message"
+  ],
+  "title": "HttpTodoResponseSuccess"
+}

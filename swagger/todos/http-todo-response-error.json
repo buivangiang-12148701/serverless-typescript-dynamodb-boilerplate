@@ -1,0 +1,37 @@
+{
+  "type": "object",
+  "readOnly": true,
+  "additionalProperties": false,
+  "properties": {
+    "code": {
+      "type": "integer",
+        "format": "int64",
+      "description": "HTTP status code",
+      "example": 400
+    },
+    "success": {
+      "type": "boolean",
+      "description": "Indicates if the request was successful",
+      "example": false
+    },
+    "message": {
+      "type": "string",
+      "description": "A message describing the error",
+        "example": "Validation failed"
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "$ref": "swagger/validator/validation-error.json"
+      }
+    }
+  },
+  "required": [
+    "code",
+    "success",
+    "message",
+    "errors"
+  ],
+  "title": "HttpTodoResponseError"
+}
