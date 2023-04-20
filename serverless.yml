@@ -72,7 +72,7 @@ resources:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
 custom:
-  currentStage: ${opt:stage, self:provider.stage}
+  currentStage: ${opt:stage, self:provider.stage, 'local'}
   serverlessIfElse:
     - If: '"${self:custom.currentStage}" == "local"'
       Set:
