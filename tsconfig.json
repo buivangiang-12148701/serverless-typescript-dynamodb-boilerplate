@@ -9,7 +9,13 @@
     "sourceMap": true,
     "target": "es6",
     "outDir": "lib",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "paths": {
+      "@/*": ["src/*"],
+      "@/test/*": ["test/*"]
+    },
+    "strict": true
   },
   "include": ["src"],
   "exclude": [
