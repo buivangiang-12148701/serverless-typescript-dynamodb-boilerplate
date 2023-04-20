@@ -1,0 +1,33 @@
+documentation:
+  version: 1.0.0
+  title: Todo API
+  description: Todo API
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  servers:
+    - url: 'http://localhost:3000'
+      description: Local server
+    - url: https://api.example.com
+      description: Development server
+    - url: https://api.example.com
+      description: Staging server
+    - url: https://api.example.com
+      description: Production server
+  models:
+    - name: ValidationError
+      description: Validation error
+      contentType: application/json
+      schema: ${file(swagger/validator/validation-error.json)}
+    - name: HttpTodoResponseError
+      description: Http todo response error
+      contentType: application/json
+      schema: ${file(swagger/todos/http-todo-response-error.json)}
+    - name: HttpTodoResponseSuccess
+      description: Http todo response success
+      contentType: application/json
+      schema: ${file(swagger/todos/http-todo-response-success.json)}
+    - name: CreateTodoDTO
+      description: Create todo DTO
+      contentType: application/json
+      schema: ${file(swagger/todos/create-todo-dto.json)}

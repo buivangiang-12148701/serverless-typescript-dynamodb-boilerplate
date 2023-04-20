@@ -1,0 +1,12 @@
+dynamodb:
+  stages:
+    - ${self:custom.currentStage}
+  start:
+    inMemory: true
+    heapInitial: 200m
+    heapMax: 1g
+    migrate: true
+    seed: true
+    convertEmptyValues: true
+#      migration:
+#        dir: resources/migrations/v0.json

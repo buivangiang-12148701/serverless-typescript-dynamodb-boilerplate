@@ -1,0 +1,7 @@
+todoTable:
+  table:
+    maxCapacity: 12
+    minCapacity: 1
+    targetUsage: 0.82
+  indexes:
+    targetUsage: 0.5

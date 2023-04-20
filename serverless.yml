@@ -15,32 +15,14 @@ provider:
   runtime: nodejs16.x
   memorySize: 128
   region: ${env:REGION}
-  logs:
-    restApi:
-      fullExecutionData: true
-      level: INFO
-      accessLogging: true
-      executionLogging: true
-      format: 'requestId: $context.requestId, ip: $context.identity.sourceIp, caller: $context.identity.caller, user: $context.identity.user, requestTime: $context.requestTime, httpMethod: $context.httpMethod, resourcePath: $context.resourcePath, status: $context.status, protocol: $context.protocol, responseLength: $context.responseLength'
+  logs: ${file(serverless/provider/logs/logs.yml):logs}
 package:
   individually: true
 functions:
   createTodo: ${file(serverless/lambda/todos/create-todo.yml):createTodo}
 resources:
   Resources:
-    todoTable:
-      Type: AWS::DynamoDB::Table
-      Properties:
-        TableName: ${env:DYNAMODB_TABLE_TODO}
-        AttributeDefinitions:
-          - AttributeName: id
-            AttributeType: S
-        KeySchema:
-          - AttributeName: id
-            KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
+    todoTable: ${file(serverless/resources/todos/todo-table.yml):todoTable}
 custom:
   currentStage: ${opt:stage, self:provider.stage, 'local'}
   serverlessIfElse:
@@ -48,66 +30,12 @@ custom:
       Set:
         custom.dynamodb.start.host: ${env:DYNAMODB_HOST}
         custom.dynamodb.start.port: ${env:DYNAMODB_PORT}
-  dynamodb:
-    stages:
-      - ${self:custom.currentStage}
-    start:
-      inMemory: true
-      heapInitial: 200m
-      heapMax: 1g
-      migrate: true
-      seed: true
-      convertEmptyValues: true
-  #      migration:
-  #        dir: resources/migrations/v0.json
-
-  webpack:
-    webpackConfig: 'webpack.config.js'
-    packager: 'npm'
-    includeModules: true
-    concurrency: 4
+  dynamodb: ${file(serverless/custom/dynamodb/dynamodb-local.yml):dynamodb}
+  webpack: ${file(serverless/custom/webpack/webpack.yml):webpack}
   todoTable: 'todo-table-${sls:stage}'
   dynamodbAutoscaling:
     tablesConfig:
       # Disable autoscaling for all tables
       "*": false
-      todoTable:
-        table:
-          maxCapacity: 12
-          minCapacity: 1
-          targetUsage: 0.82
-        indexes:
-          targetUsage: 0.5
-  documentation:
-    version: 1.0.0
-    title: Todo API
-    description: Todo API
-    license:
-      name: MIT
-      url: https://opensource.org/licenses/MIT
-    servers:
-      - url: 'http://localhost:3000'
-        description: Local server
-      - url: https://api.example.com
-        description: Development server
-      - url: https://api.example.com
-        description: Staging server
-      - url: https://api.example.com
-        description: Production server
-    models:
-      - name: ValidationError
-        description: Validation error
-        contentType: application/json
-        schema: ${file(swagger/validator/validation-error.json)}
-      - name: HttpTodoResponseError
-        description: Http todo response error
-        contentType: application/json
-        schema: ${file(swagger/todos/http-todo-response-error.json)}
-      - name: HttpTodoResponseSuccess
-        description: Http todo response success
-        contentType: application/json
-        schema: ${file(swagger/todos/http-todo-response-success.json)}
-      - name: CreateTodoDTO
-        description: Create todo DTO
-        contentType: application/json
-        schema: ${file(swagger/todos/create-todo-dto.json)}
+      todoTable: ${file(serverless/custom/dynamodb-scaling/todos/todo-table.yml):todoTable}
+  documentation: ${file(serverless/custom/documentation/documentation.yml):documentation}
