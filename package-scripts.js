@@ -2,6 +2,16 @@ const npsUtils = require('nps-utils');
 
 module.exports = {
   scripts: {
+    local: {
+      default: {
+        script: 'node node_modules/serverless/bin/serverless offline start --reloadHandler --stage local',
+        description: "Start serverless offline",
+      },
+      debug: {
+        script: 'export SLS_DEBUG=* && node --inspect node_modules/serverless/bin/serverless offline start --stage local',
+        description: "Start serverless offline in debug mode",
+      },
+    },
     test: 'echo "Error: no test specified" && exit 1',
     prepare: {
       default: {
@@ -20,16 +30,6 @@ module.exports = {
     db: {
       default: 'sls dynamodb start --migrate --stage local',
       description: "Start dynamodb local",
-    },
-    local: {
-      default: {
-        script: 'node node_modules/serverless/bin/serverless offline start --reloadHandler --stage local',
-        description: "Start serverless offline",
-      },
-      debug: {
-        script: 'export SLS_DEBUG=* && node --inspect node_modules/serverless/bin/serverless offline start --stage local',
-        description: "Start serverless offline in debug mode",
-      },
     },
     deploy: {
       dev: {
