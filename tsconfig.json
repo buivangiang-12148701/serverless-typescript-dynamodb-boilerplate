@@ -8,20 +8,21 @@
     "noUnusedParameters": true,
     "sourceMap": true,
     "target": "es6",
-    "outDir": "lib",
+    "outDir": "dist",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "paths": {
       "@/*": ["src/*"],
-      "@/test/*": ["test/*"]
+      "@/tests/*": ["tests/*"]
     },
     "strict": true
   },
-  "include": ["src"],
+  "include": ["src", "tests"],
   "exclude": [
     "node_modules/**/*",
     ".serverless/**/*",
     ".webpack/**/*",
+    ".webpackCache/**/*",
     "_warmup/**/*",
     ".vscode/**/*"
   ]

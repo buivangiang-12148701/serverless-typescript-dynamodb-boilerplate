@@ -7,9 +7,9 @@
     "menu": "nps-i",
     "postinstall": "nps prepare"
   },
-  "engines" : {
-    "npm" : ">=9.0.0",
-    "node" : ">=16.0.0"
+  "engines": {
+    "npm": ">=9.0.0",
+    "node": ">=16.0.0"
   },
   "keywords": [],
   "author": "",
@@ -23,8 +23,15 @@
     "@faker-js/faker": "^7.6.0",
     "@redocly/cli": "^1.0.0-beta.125",
     "@types/aws-lambda": "^8.10.114",
+    "@types/module-alias": "^2.0.1",
     "@types/node": "^18.15.11",
+    "@typescript-eslint/eslint-plugin": "^5.59.0",
     "babel-loader": "^9.1.2",
+    "eslint": "^8.38.0",
+    "eslint-config-standard-with-typescript": "^34.0.1",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-n": "^15.7.0",
+    "eslint-plugin-promise": "^6.1.1",
     "nps": "^5.10.0",
     "nps-i": "^1.0.2",
     "nps-utils": "^1.7.0",
@@ -50,6 +57,7 @@
     "@middy/core": "^4.3.1",
     "@middy/http-json-body-parser": "^4.3.1",
     "fastest-validator": "^1.16.0",
+    "module-alias": "^2.2.2",
     "nanoid": "^3.3.6"
   }
 }

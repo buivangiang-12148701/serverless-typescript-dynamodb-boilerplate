@@ -9,7 +9,10 @@ module.exports = {
     externals: [nodeExternals()],
     devtool: 'source-map',
     resolve: {
-        extensions: ['.js', '.jsx', '.json', '.ts', '.tsx']
+        extensions: ['.js', '.jsx', '.json', '.ts', '.tsx'],
+        alias: {
+            '@': path.resolve(__dirname, 'src')
+        }
     },
     output: {
         libraryTarget: 'commonjs',

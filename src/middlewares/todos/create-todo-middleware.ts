@@ -1,7 +1,9 @@
+require('module-alias/register')
 import {APIGatewayProxyEvent, APIGatewayProxyResult} from "aws-lambda";
-import {CreateTodoDto, createTodoSchema} from "../../dto/todos/create-todo-dto";
 import {ListValidateError} from "../../types/validator/validation-error";
 import middy from "@middy/core";
+import { CreateTodoDto } from "@/dto/todos/create-todo-dto";
+import { createTodoSchema } from "@/dto/todos/create-todo-dto";
 
 const Validator = require("fastest-validator");
 
