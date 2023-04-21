@@ -1,5 +1,5 @@
 export interface HttpResponseTodoSuccess {
-    code: number;
-    success: boolean;
-    message: string;
+  code: number
+  success: boolean
+  message: string
 }

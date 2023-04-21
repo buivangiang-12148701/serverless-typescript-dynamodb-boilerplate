@@ -1,12 +1,13 @@
-class CreateTodoError implements Error {
-    message: string;
-    name: string;
-  constructor(message?: string) {
-    this.name = 'CreateTodoError';
-    this.message = message ?? 'Insert todo error';
+export class CreateTodoError extends Error {
+  message: string
+  name: string
+  constructor (message?: string) {
+    super()
+    this.name = 'CreateTodoError'
+    this.message = message ?? 'Insert todo error'
   }
 
-  toString(): string {
-      return this.message;
+  toString (): string {
+    return this.message
   }
 }

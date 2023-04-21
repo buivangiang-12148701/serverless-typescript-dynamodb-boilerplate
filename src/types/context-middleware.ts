@@ -1,5 +1,5 @@
-import {Context} from "aws-lambda";
+import { type Context } from 'aws-lambda'
 
 export interface ContextMiddleware extends Context {
-    prev?: any;
+  prev?: any
 }
