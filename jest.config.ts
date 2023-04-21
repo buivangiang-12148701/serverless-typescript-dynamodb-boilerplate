@@ -24,4 +24,7 @@ export default {
   transform: {
     '\\.ts$': 'ts-jest',
   },
+
+  // setting up environment
+  testEnvironment: 'node',
 };

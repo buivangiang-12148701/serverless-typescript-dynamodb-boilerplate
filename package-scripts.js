@@ -14,7 +14,7 @@ module.exports = {
     },
     lint: {
       default: {
-        script: 'npx eslint .',
+        script: 'eslint .',
         description: 'Lint all files'
       },
       fix: {
@@ -31,10 +31,14 @@ module.exports = {
         script: 'npx jest --passWithNoTests --no-cache --runInBand --watch',
         description: 'Run all tests in watch mode'
       },
+      staged: {
+        script: 'npx jest --passWithNoTests --no-cache --runInBand --findRelatedTests',
+        description: 'Run tests related to staged files'
+      },
       coverage: {
         script: 'npx jest --passWithNoTests --no-cache --runInBand --coverage',
         description: 'Run all tests and generate coverage report'
-      },
+      }
     },
     prepare: {
       default: {

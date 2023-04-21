@@ -56,6 +56,7 @@ const createTodo = async (_event: APIGatewayProxyEvent, context: ContextTodo): P
     }
   } catch (error) {
     console.log('show create todo error: ', error)
+    console.log('add test husky')
     const errors: Error[] = []
     errors.push(
       new CreateTodoError()
