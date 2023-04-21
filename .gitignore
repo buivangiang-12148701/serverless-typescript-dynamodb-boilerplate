@@ -17,3 +17,6 @@ jspm_packages
 # ignore intelij
 .idea
 .DS_Store
+
+# Ignore coverage directory
+coverage

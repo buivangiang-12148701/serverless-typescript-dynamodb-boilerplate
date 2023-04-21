@@ -22,7 +22,20 @@ module.exports = {
         description: 'Lint all files and fix'
       }
     },
-    test: 'echo "Error: no test specified" && exit 1',
+    test: {
+      default: {
+        script: 'npx jest --passWithNoTests --no-cache --runInBand',
+        description: 'Run all tests'
+      },
+      watch: {
+        script: 'npx jest --passWithNoTests --no-cache --runInBand --watch',
+        description: 'Run all tests in watch mode'
+      },
+      coverage: {
+        script: 'npx jest --passWithNoTests --no-cache --runInBand --coverage',
+        description: 'Run all tests and generate coverage report'
+      },
+    },
     prepare: {
       default: {
         script: npsUtils.series('nps prepare.chmod', 'nps prepare.after-install'),
