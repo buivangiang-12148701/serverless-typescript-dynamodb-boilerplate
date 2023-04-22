@@ -10,6 +10,10 @@
 
 ## Deploy Serverless framework for Codepipeline, Codebuild, CodeDeploy, CodeCommit, etc.
 
+### Automation CI/CD 
+
 ## Configuring CI/CD for project send notification to Chatwork, Email, Slack, etc.
 
 ## Configuring alert cloudwatch for lambda, dynamodb, etc.
+
+## check node 16.x

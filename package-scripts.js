@@ -4,11 +4,11 @@ module.exports = {
   scripts: {
     local: {
       default: {
-        script: 'node node_modules/serverless/bin/serverless offline start --reloadHandler --stage local',
+        script: npsUtils.series('./scripts/validate-node-version.sh', 'node node_modules/serverless/bin/serverless offline start --reloadHandler --stage local'),
         description: 'Start serverless offline'
       },
       debug: {
-        script: 'export SLS_DEBUG=* && node --inspect node_modules/serverless/bin/serverless offline start --stage local',
+        script: npsUtils.series('./scripts/validate-node-version.sh', 'export SLS_DEBUG=* && node --inspect node_modules/serverless/bin/serverless offline start --stage local'),
         description: 'Start serverless offline in debug mode'
       }
     },
@@ -60,23 +60,23 @@ module.exports = {
     },
     deploy: {
       dev: {
-        script: npsUtils.series('export AWS_CLIENT_TIMEOUT=1800000', 'node node_modules/serverless/bin/serverless deploy --verbose --stage dev'),
+        script: npsUtils.series('./scripts/validate-node-version.sh', 'export AWS_CLIENT_TIMEOUT=1800000', 'node node_modules/serverless/bin/serverless deploy --verbose --stage dev'),
         description: 'Deploy to dev environment with timeout 30 minutes'
       },
       remove: {
         dev: {
-          script: 'node node_modules/serverless/bin/serverless remove --verbose --stage dev',
+          script: npsUtils.series('./scripts/validate-node-version.sh', 'node node_modules/serverless/bin/serverless remove --verbose --stage dev'),
           description: 'Remove dev environment'
         }
       }
     },
     document: {
       generate: {
-        script: npsUtils.series('rimraf ./swagger/openapi.json', 'rimraf ./swagger/postman.json', 'serverless openapi generate -o ./swagger/openapi.json -f json -a 3.0.3 -p ./swagger/postman.json'),
+        script: npsUtils.series('./scripts/validate-node-version.sh', 'rimraf ./swagger/openapi.json', 'rimraf ./swagger/postman.json', 'node node_modules/serverless/bin/serverless openapi generate -o ./swagger/openapi.json -f json -a 3.0.3 -p ./swagger/postman.json'),
         description: 'Generate swagger document'
       },
       view: {
-        script: './scripts/open-document-view.sh',
+        script: npsUtils.series('./scripts/validate-node-version.sh', './scripts/open-document-view.sh'),
         description: 'View Swagger document on browser'
       },
       stop: {
