@@ -3,5 +3,10 @@ module.exports = {
   parserOptions: {
     project: './tsconfig.json'
   },
-  ignorePatterns: ['jest.config.ts']
+  ignorePatterns: ['jest.config.ts'],
+  rules: {
+
+    '@typescript-eslint/consistent-type-definitions': 'off',
+    '@typescript-eslint/no-namespace': 'off'
+  }
 }
