@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-AU="hello world"
 # define colors for output
+# shellcheck disable=SC2034
 RED='\033[0;31m'
 GREEN='\033[32m'
 YELLOW='\033[0;33m'
