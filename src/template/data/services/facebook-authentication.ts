@@ -2,6 +2,7 @@ import { LoadFacebookUserApi } from '@/template/data/contracts/apis'
 import { FacebookAuthentication } from '@/template/domain/features'
 import { AuthenticationError } from '@/template/domain/errors'
 import { CRUDAccountRepository } from '@/template/data/contracts/repository'
+import { FacebookAccount } from '@/template/domain/models'
 
 export class FacebookAuthenticationService {
   constructor (
@@ -13,12 +14,8 @@ export class FacebookAuthenticationService {
     const fbData = await this.facebookApi.loadUser({ token: params.token })
     if (fbData === undefined) return new AuthenticationError()
     const accountData = await this.userAccountRepository.load({ email: fbData.email })
-    await this.userAccountRepository.saveWithFacebook({
-      id: accountData?.id,
-      name: accountData?.name ?? fbData.name,
-      email: fbData.email,
-      facebookId: fbData.facebookId
-    })
+    const fbAccount = new FacebookAccount(fbData, accountData)
+    await this.userAccountRepository.saveWithFacebook(fbAccount)
     return new AuthenticationError()
   }
 }
