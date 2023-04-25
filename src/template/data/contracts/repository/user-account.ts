@@ -28,5 +28,3 @@ export namespace SaveFacebookAccountRepository {
   export type Result = undefined
 
 }
-
-export type CRUDAccountRepository = LoadUserAccountRepository & SaveFacebookAccountRepository

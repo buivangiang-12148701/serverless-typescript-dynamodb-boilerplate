@@ -1,13 +1,13 @@
 import { LoadFacebookUserApi } from '@/template/data/contracts/apis'
 import { FacebookAuthentication } from '@/template/domain/features'
 import { AuthenticationError } from '@/template/domain/errors'
-import { CRUDAccountRepository } from '@/template/data/contracts/repository'
+import { LoadUserAccountRepository, SaveFacebookAccountRepository } from '@/template/data/contracts/repository'
 import { FacebookAccount } from '@/template/domain/models'
 
 export class FacebookAuthenticationService {
   constructor (
     private readonly facebookApi: LoadFacebookUserApi,
-    private readonly userAccountRepository: CRUDAccountRepository
+    private readonly userAccountRepository: LoadUserAccountRepository & SaveFacebookAccountRepository
   ) {}
 
   async perform (params: FacebookAuthentication.Params): Promise<AuthenticationError> {
