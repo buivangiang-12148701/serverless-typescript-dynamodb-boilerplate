@@ -5,16 +5,19 @@ import { mock, MockProxy } from 'jest-mock-extended'
 import { LoadUserAccountRepository, SaveFacebookAccountRepository } from '@/template/data/contracts/repository'
 import { mocked } from 'jest-mock'
 import { FacebookAccount } from '@/template/domain/models'
+import { TokenGenerator } from '@/template/data/contracts/cryptos'
 
 jest.mock('@/template/domain/models/facebook-account')
 
 describe('FacebookAuthenticationService', () => {
   let facebookApi: MockProxy<LoadFacebookUserApi>
+  let crypto: MockProxy<TokenGenerator>
   let userAccountRepository: MockProxy<LoadUserAccountRepository & SaveFacebookAccountRepository>
   let sut: FacebookAuthenticationService
   const token = 'any_token'
   beforeEach(() => {
     facebookApi = mock<LoadFacebookUserApi>()
+    crypto = mock<TokenGenerator>()
     facebookApi.loadUser.mockResolvedValue({
       facebookId: 'any_fb_id',
       name: 'any_fb_name',
@@ -22,7 +25,8 @@ describe('FacebookAuthenticationService', () => {
     })
     userAccountRepository = mock()
     userAccountRepository.load.mockResolvedValue(undefined)
-    sut = new FacebookAuthenticationService(facebookApi, userAccountRepository)
+    userAccountRepository.saveWithFacebook.mockResolvedValueOnce({ id: 'any_account_id' })
+    sut = new FacebookAuthenticationService(facebookApi, userAccountRepository, crypto)
   })
 
   it('Should call LoadFacebookUserApi with correct params', async () => {
@@ -55,5 +59,15 @@ describe('FacebookAuthenticationService', () => {
 
     expect(userAccountRepository.saveWithFacebook).toHaveBeenCalledWith({ any: 'any' })
     expect(userAccountRepository.saveWithFacebook).toHaveBeenCalledTimes(1)
+  })
+
+  it('Should call TokenGenerator with correct params', async () => {
+    const FacebookAccountStub = jest.fn().mockImplementation(() => ({ any: 'any' }))
+    mocked(FacebookAccount).mockImplementation(FacebookAccountStub)
+
+    await sut.perform({ token })
+
+    expect(crypto.generateToken).toHaveBeenCalledWith({ key: 'any_account_id' })
+    expect(crypto.generateToken).toHaveBeenCalledTimes(1)
   })
 })
