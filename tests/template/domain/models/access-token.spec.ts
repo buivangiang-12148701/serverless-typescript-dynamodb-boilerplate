@@ -10,4 +10,10 @@ describe('AccessToken', () => {
   it('Should expire in 1800000 ms', () => {
     expect(AccessToken.expirationInMs).toBe(1800000)
   })
+
+  it('Should return value when called method getValue', () => {
+    const sut = new AccessToken('any_value')
+
+    expect(sut.getValue()).toBe('any_value')
+  })
 })
