@@ -1,5 +1,10 @@
 # Authentication with Facebook
 
+## Library used
+- axios
+- @types/axios
+- jsonwebtoken
+- @types/jsonwebtoken
 ## Data:
 * Access Token
 
