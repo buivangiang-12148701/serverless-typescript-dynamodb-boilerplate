@@ -8,6 +8,6 @@ module.exports = {
 
     '@typescript-eslint/consistent-type-definitions': 'off',
     '@typescript-eslint/no-namespace': 'off',
-    '@typescript-eslint/consistent-type-imports': 'off'
+    '@typescript-eslint/return-await': 'off'
   }
 }
