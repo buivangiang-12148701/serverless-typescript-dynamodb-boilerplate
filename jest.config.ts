@@ -27,4 +27,7 @@ export default {
 
   // setting up environment
   testEnvironment: 'node',
+
+  // clear mocks after each test
+  clearMocks: true,
 };
