@@ -1,14 +1,11 @@
 import { Handler } from '@/application/handler/handler'
 import { type APIGatewayProxyEvent, type APIGatewayProxyResult, type Callback, type Context } from 'aws-lambda'
+import { PrintMiddleware } from '@/application/middlewares'
 
 export class CreateTodoHandle extends Handler {
   override get middlewares (): any | any[] {
     return [
-      ({
-        before: async (_handler: any) => {
-          console.log('Before middleware')
-        }
-      })
+      new PrintMiddleware()
     ]
   }
 

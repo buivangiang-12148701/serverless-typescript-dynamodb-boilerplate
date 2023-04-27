@@ -1,5 +1,6 @@
 import { type APIGatewayProxyEvent, type APIGatewayProxyResult, type Callback, type Context } from 'aws-lambda'
 import middy, { type MiddyfiedHandler } from '@middy/core'
+import { type Middleware } from '@/application/middlewares'
 
 export abstract class Handler {
   handler: MiddyfiedHandler
@@ -10,7 +11,7 @@ export abstract class Handler {
 
   abstract perform (event: APIGatewayProxyEvent, context: Context, callback: Callback): Promise<APIGatewayProxyResult>
 
-  get middlewares (): any | any[] {
+  get middlewares (): Middleware | Middleware[] {
     return []
   }
 
