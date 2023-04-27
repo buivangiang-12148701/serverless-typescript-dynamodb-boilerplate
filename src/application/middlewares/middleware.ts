@@ -4,12 +4,10 @@ import { type Context } from 'aws-lambda'
 
 export abstract class Middleware implements middy.MiddlewareObj {
   async before (_request: Request<unknown, any, Error, Context>): Promise<any> {
-    console.log('before middleware')
     return Promise.resolve()
   }
 
   async after (_request: Request<unknown, any, Error, Context>): Promise<any> {
-    console.log('after middleware')
     return Promise.resolve()
   }
 
@@ -17,13 +15,3 @@ export abstract class Middleware implements middy.MiddlewareObj {
     return Promise.resolve()
   }
 }
-
-// export namespace Middleware {
-//   export type Params = {
-//     before?: onHookFunc
-//     after?: onHookFunc
-//     onError?: onHookFunc
-//   }
-//
-//   export type onHookFunc = (request: Request) => Promise<any>
-// }

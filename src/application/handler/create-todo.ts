@@ -1,11 +1,13 @@
 import { Handler } from '@/application/handler/handler'
 import { type APIGatewayProxyEvent, type APIGatewayProxyResult, type Callback, type Context } from 'aws-lambda'
-import { PrintMiddleware } from '@/application/middlewares'
+import { makePrintMiddleware } from '@/main/factories/application/middlewares'
+import { MiddlewareBuilder } from '@/application/middlewares/builder'
 
 export class CreateTodoHandle extends Handler {
   override get middlewares (): any | any[] {
     return [
-      new PrintMiddleware()
+      ...MiddlewareBuilder.of().withJsonBodyParser().build(),
+      makePrintMiddleware()
     ]
   }
 
