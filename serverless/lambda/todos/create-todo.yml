@@ -1,5 +1,6 @@
 createTodo:
-  handler: src/handler/todos/create-todo.handler
+  handler: src/server.createTodoHandler
+  timeout: 900
   iamRoleStatements:
     - Effect: "Allow"
       Action:
