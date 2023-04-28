@@ -1,6 +1,5 @@
 import { type APIGatewayProxyEvent, type APIGatewayProxyResult, type Callback, type Context } from 'aws-lambda'
 import middy, { type MiddyfiedHandler } from '@middy/core'
-import { type Middleware } from '@/application/middlewares'
 
 type HookParams = Record<string, any>
 type HookResult = {
@@ -15,7 +14,7 @@ type HookResult = {
 
 export abstract class Handler {
   handler: MiddyfiedHandler
-  constructor () {
+  protected constructor () {
     this.handler = middy(this.defineHooks())
     this.addMiddlewares()
     this.handler.handler(this.perform)
@@ -26,8 +25,15 @@ export abstract class Handler {
   /**
    * add middlewares to the handler with order
    */
-  get middlewares (): Middleware | Middleware[] {
+  get middlewares (): Array<middy.MiddlewareObj<any, any, Error, any>> {
     return []
+  }
+
+  /**
+   * add dependencies for class
+   */
+  get dependencies (): Set<string> {
+    return new Set<string>()
   }
 
   /**
@@ -47,7 +53,8 @@ export abstract class Handler {
   }
 
   /**
-   * Triggered before every before, after, and onError middleware function. The function name is passed in, this is why all middlewares use a verbose naming pattern.
+   * Triggered before every before, after, and onError middleware function. The function name is passed in
+   * this is why all middlewares use a verbose naming pattern.
    * @protected
    */
   protected async beforeMiddleware (_fctName: string): Promise<void> {
@@ -55,7 +62,8 @@ export abstract class Handler {
   }
 
   /**
-   * Triggered after every before, after, and onError middleware function. The function name is passed in, this is why all middlewares use a verbose naming pattern.
+   * Triggered after every before, after, and onError middleware function. The function name is passed in
+   * this is why all middlewares use a verbose naming pattern.
    * @protected
    */
   protected async afterMiddleware (_fctName: string): Promise<void> {
@@ -91,6 +99,10 @@ export abstract class Handler {
     this.handler.use(middlewares)
   }
 
+  /**
+   * provides hooks into it's core to allow for monitoring, setup, and cleaning that may not be possible within a middleware.
+   * @protected
+   */
   protected defineHooks (_params: HookParams = {}): any {
     return {
       beforePrefetch: this.beforePrefetch,

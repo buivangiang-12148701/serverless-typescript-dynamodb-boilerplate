@@ -1,4 +1,4 @@
-import { ForbiddenError, ServerError, UnauthorizedError } from '@/application/errors'
+import { ForbiddenError, ServerError, UnauthorizedError } from '@/presentation/errors'
 
 export type HttpResponse<T = any> = {
   statusCode: number

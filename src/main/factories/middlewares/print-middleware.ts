@@ -1,4 +1,4 @@
-import { PrintMiddleware } from '@/application/middlewares'
+import { PrintMiddleware } from '@/presentation/middlewares'
 
 export const makePrintMiddleware = (): PrintMiddleware => {
   return new PrintMiddleware()
