@@ -22,3 +22,11 @@ export const serverError = (error?: unknown): HttpResponse => ({
   },
   body: new ServerError(error instanceof Error ? error : undefined).toString()
 })
+
+export const badRequest = (error: Error): HttpResponse => ({
+  statusCode: 400,
+  headers: {
+    contentType: 'application/json'
+  },
+  body: error.toString()
+})

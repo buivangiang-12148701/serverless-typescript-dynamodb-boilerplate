@@ -66,9 +66,11 @@
   "dependencies": {
     "@middy/core": "^4.3.1",
     "@middy/http-json-body-parser": "^4.3.1",
+    "@middy/http-security-headers": "^4.4.0",
     "date-fns": "^2.29.3",
     "dynamoose": "^3.2.0",
     "envalid": "^7.3.1",
+    "fastest-validator": "^1.17.0",
     "module-alias": "^2.2.2",
     "nanoid": "^3.0.0"
   }
