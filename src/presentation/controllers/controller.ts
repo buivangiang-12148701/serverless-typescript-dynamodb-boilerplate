@@ -12,7 +12,7 @@ type HookResult = {
   requestEnd: (request: middy.Request) => Promise<void>
 }
 
-export abstract class Handler {
+export abstract class Controller {
   handler: MiddyfiedHandler
   protected constructor () {
     this.handler = middy(this.defineHooks())

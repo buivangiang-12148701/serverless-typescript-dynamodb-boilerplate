@@ -1,31 +1,24 @@
-import { ForbiddenError, ServerError, UnauthorizedError } from '@/presentation/errors'
+import { ServerError } from '@/presentation/errors'
 
-export type HttpResponse<T = any> = {
+export type HttpResponse = {
   statusCode: number
-  data: T
+  headers?: Record<string, boolean | number | string> | undefined
+  multiValueHeaders?: Record<string, Array<boolean | number | string>> | undefined
+  body: string
+  isBase64Encoded?: boolean | undefined
 }
 
-export const ok = <T = any> (data: T): HttpResponse<T> => ({
-  statusCode: 200,
-  data
+export const created = <T = any> (data: T): HttpResponse => ({
+  statusCode: 201,
+  headers: {
+    contentType: 'application/json'
+  },
+  body: JSON.stringify(data)
 })
-
-export const badRequest = (error: Error): HttpResponse<Error> => ({
-  statusCode: 400,
-  data: error
-})
-
-export const unauthorized = (): HttpResponse<Error> => ({
-  statusCode: 401,
-  data: new UnauthorizedError()
-})
-
-export const forbidden = (): HttpResponse<Error> => ({
-  statusCode: 403,
-  data: new ForbiddenError()
-})
-
-export const serverError = (error: unknown): HttpResponse<Error> => ({
+export const serverError = (error?: unknown): HttpResponse => ({
   statusCode: 500,
-  data: new ServerError(error instanceof Error ? error : undefined)
+  headers: {
+    contentType: 'application/json'
+  },
+  body: new ServerError(error instanceof Error ? error : undefined).toString()
 })

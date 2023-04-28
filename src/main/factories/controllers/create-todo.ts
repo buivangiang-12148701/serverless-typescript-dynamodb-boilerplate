@@ -1,7 +1,7 @@
-import { CreateTodoHandle } from '@/presentation/handler'
 import { makeDbAddTodo } from '@/main/factories/usecases/add-todo-factory'
+import { CreateTodoController } from '@/presentation/controllers'
 
-export const makeCreateTodoHandler = (): CreateTodoHandle => {
+export const makeCreateTodoController = (): CreateTodoController => {
   const dbAddTodo = makeDbAddTodo()
-  return new CreateTodoHandle(dbAddTodo)
+  return new CreateTodoController(dbAddTodo)
 }
