@@ -1,6 +1,5 @@
-import { makeDbAddTodo } from '@/main/factories/usecases/add-todo-factory'
 import { CreateTodoController } from '@/presentation/controllers'
-import { makeCreateTodoValidatorMiddleware } from '@/main/factories/middlewares/validator-middleware'
+import { makeDbAddTodo, makeCreateTodoValidatorMiddleware } from '@/main/factories'
 
 export const makeCreateTodoController = (): CreateTodoController => {
   const dbAddTodo = makeDbAddTodo()

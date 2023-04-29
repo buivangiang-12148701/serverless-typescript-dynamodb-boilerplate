@@ -1,11 +1,9 @@
-import { Middleware } from '@/presentation/middlewares/middleware'
+import { Middleware } from '@/presentation/middlewares'
 import { type Request } from '@middy/core'
 import { type Context } from 'aws-lambda'
-import { get } from '@/presentation/helpers/util'
-import { badRequest } from '@/presentation/helpers'
-import { BadRequestError } from '@/presentation/errors'
+import { get, badRequest } from '@/presentation/helpers'
+import { BadRequestError, FastestValidatorError as FastestValidatorErrorImpl } from '@/presentation/errors'
 import { type Validator } from '@/presentation/validator'
-import { FastestValidatorError as FastestValidatorErrorImpl } from '@/presentation/errors/validator'
 
 export class ValidatorMiddleware extends Middleware {
   private static validator: Validator<Error[], boolean>

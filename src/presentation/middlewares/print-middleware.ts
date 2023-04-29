@@ -1,4 +1,4 @@
-import { Middleware } from '@/presentation/middlewares/middleware'
+import { Middleware } from '@/presentation/middlewares'
 import { type Request } from '@middy/core'
 import { type Context } from 'aws-lambda'
 

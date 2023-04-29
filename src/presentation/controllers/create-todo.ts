@@ -1,6 +1,6 @@
-import { Controller } from '@/presentation/controllers/controller'
+import { Controller } from '@/presentation/controllers'
 import { type APIGatewayProxyResult, type Callback, type Context } from 'aws-lambda'
-import { MiddlewareBuilder } from '@/presentation/middlewares/builder'
+import { MiddlewareBuilder } from '@/presentation/middlewares'
 import type middy from '@middy/core'
 import { type AddTodo } from '@/domain/usecases'
 import { type EventJSON } from '@/main/types'
