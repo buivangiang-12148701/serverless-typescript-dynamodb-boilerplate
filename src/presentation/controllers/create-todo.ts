@@ -5,16 +5,14 @@ import type middy from '@middy/core'
 import { type AddTodo } from '@/domain/usecases'
 import { type EventJSON } from '@/main/types'
 import { created, serverError } from '@/presentation/helpers'
-import type Validator from 'fastest-validator'
+import { type Middleware } from '@/presentation/middlewares'
 
 export class CreateTodoController extends Controller {
   private static addTodo: AddTodo
-  private static schema: object
-  private static validator: Validator
-  constructor (addTodo: AddTodo, validator: Validator, schema: object) {
+  private static validatorMiddleware: Middleware
+  constructor (addTodo: AddTodo, validatorMiddleware: Middleware) {
     CreateTodoController.addTodo = addTodo
-    CreateTodoController.validator = validator
-    CreateTodoController.schema = schema
+    CreateTodoController.validatorMiddleware = validatorMiddleware
     super()
   }
 
@@ -22,7 +20,7 @@ export class CreateTodoController extends Controller {
     return [
       ...MiddlewareBuilder.of()
         .withJsonBodyParser()
-        .withValidator(CreateTodoController.validator, CreateTodoController.schema)
+        .withValidator(CreateTodoController.validatorMiddleware)
         .withSecurityHeaders().build()
     ]
   }
