@@ -26,11 +26,11 @@ resources:
     todoTable: ${file(serverless/resources/todos/todo-table.yml):todoTable}
 custom:
   currentStage: ${opt:stage, self:provider.stage, 'local'}
-  serverlessIfElse:
-    - If: '"${self:custom.currentStage}" == "local"'
-      Set:
-        custom.dynamodb.start.host: ${env:DYNAMODB_HOST}
-        custom.dynamodb.start.port: ${env:DYNAMODB_PORT}
+#  serverlessIfElse:
+#    - If: '"${self:custom.currentStage}" == "local"'
+#      Set:
+#        custom.dynamodb.start.host: ${env:DYNAMODB_HOST}
+#        custom.dynamodb.start.port: ${env:DYNAMODB_PORT}
   dynamodb: ${file(serverless/custom/dynamodb/dynamodb-local.yml):dynamodb}
   webpack: ${file(serverless/custom/webpack/webpack.yml):webpack}
   todoTable: 'todo-table-${sls:stage}'

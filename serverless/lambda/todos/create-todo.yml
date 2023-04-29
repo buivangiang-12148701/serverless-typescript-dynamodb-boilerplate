@@ -1,6 +1,6 @@
 createTodo:
   handler: src/server.createTodoHandler
-  timeout: 900
+  timeout: ${env:TIMEOUT, 30}
   iamRoleStatements:
     - Effect: "Allow"
       Action:
