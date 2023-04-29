@@ -31,7 +31,7 @@ const todoSchema = new dynamoose.Schema({
   saveUnknown: false
 })
 
-// define options for serverless create table
+// define options should not create table if not exist because serverless framework will create it
 const modelTableOptions: ModelTableOptions = {
   tableName,
   create: false,

@@ -11,7 +11,7 @@ export type HttpResponse = {
 export const created = <T = any> (data: T): HttpResponse => ({
   statusCode: 201,
   headers: {
-    contentType: 'application/json'
+    'Content-Type': 'application/json'
   },
   isBase64Encoded: false,
   body: JSON.stringify(data)
@@ -19,7 +19,7 @@ export const created = <T = any> (data: T): HttpResponse => ({
 export const serverError = (error?: unknown): HttpResponse => ({
   statusCode: 500,
   headers: {
-    contentType: 'application/json'
+    'Content-Type': 'application/json'
   },
   isBase64Encoded: false,
   body: new ServerError(error instanceof Error ? error : undefined).toString()
@@ -28,7 +28,7 @@ export const serverError = (error?: unknown): HttpResponse => ({
 export const badRequest = (error: Error): HttpResponse => ({
   statusCode: 400,
   headers: {
-    contentType: 'application/json'
+    'Content-Type': 'application/json'
   },
   isBase64Encoded: false,
   body: error.toString()
