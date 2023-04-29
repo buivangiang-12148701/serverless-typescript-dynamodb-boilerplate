@@ -1,12 +1,12 @@
 import { FastestValidatorError } from '@/presentation/errors/validator'
 import type { ValidationError } from 'fastest-validator'
 import type Validator from 'fastest-validator'
-import { type SchemaValidatorService } from '@/data/protocols/validator'
-export class SchemaFastestValidatorService implements SchemaValidatorService {
+import { type SchemaValidator } from '@/validator'
+export class SchemaFastestValidatorAdapter implements SchemaValidator {
   constructor (private readonly validator: Validator) {
   }
 
-  async validate (params: SchemaValidatorService.Params): Promise<SchemaValidatorService.Result> {
+  async validate (params: SchemaValidator.Params): Promise<SchemaValidator.Result> {
     const check = this.validator.compile(params.schema)
     const errors = await check(params.value)
     if (Array.isArray(errors)) {
