@@ -1,4 +1,4 @@
-export const addTodoSchema = {
+export const createTodoSchema = {
   title: {
     type: 'string'
   },

@@ -2,16 +2,16 @@ import { Controller } from '@/presentation/controllers'
 import { type APIGatewayProxyResult, type Callback, type Context } from 'aws-lambda'
 import { MiddlewareBuilder } from '@/presentation/middlewares'
 import type middy from '@middy/core'
-import { type AddTodo } from '@/domain/usecases'
+import { type CreateTodo } from '@/domain/usecases'
 import { type EventJSON } from '@/main/types'
 import { created, serverError } from '@/presentation/helpers'
 import { type Middleware } from '@/presentation/middlewares'
 
 export class CreateTodoController extends Controller {
-  private static addTodo: AddTodo
+  private static createTodo: CreateTodo
   private static validatorMiddleware: Middleware
-  constructor (addTodo: AddTodo, validatorMiddleware: Middleware) {
-    CreateTodoController.addTodo = addTodo
+  constructor (createTodo: CreateTodo, validatorMiddleware: Middleware) {
+    CreateTodoController.createTodo = createTodo
     CreateTodoController.validatorMiddleware = validatorMiddleware
     super()
   }
@@ -27,7 +27,7 @@ export class CreateTodoController extends Controller {
 
   async perform (event: EventJSON, _context: Context, _callback: Callback): Promise<APIGatewayProxyResult> {
     try {
-      const result = await CreateTodoController.addTodo.add(event.body as AddTodo.Params)
+      const result = await CreateTodoController.createTodo.add(event.body as CreateTodo.Params)
       if (result) {
         return created({
           message: 'Todo item was created successfully'

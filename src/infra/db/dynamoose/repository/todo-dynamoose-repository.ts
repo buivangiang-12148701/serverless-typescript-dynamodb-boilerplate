@@ -1,8 +1,8 @@
 import { TodoModel } from '@/infra/db/dynamoose/models'
-import { type AddTodoRepository } from '@/data/protocols/db/todo'
+import { type CreateTodoRepository } from '@/data/protocols/db/todo'
 
-export class TodoDynamooseRepository implements AddTodoRepository {
-  async add (params: AddTodoRepository.Params): Promise<AddTodoRepository.Result> {
+export class TodoDynamooseRepository implements CreateTodoRepository {
+  async add (params: CreateTodoRepository.Params): Promise<CreateTodoRepository.Result> {
     try {
       const todoModel = new TodoModel(params)
       await todoModel.save()

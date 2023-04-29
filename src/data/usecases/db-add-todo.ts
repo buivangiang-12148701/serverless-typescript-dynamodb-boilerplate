@@ -1,10 +1,10 @@
-import { type AddTodo } from '@/domain/usecases'
-import { type AddTodoRepository } from '@/data/protocols/db/todo'
+import { type CreateTodo } from '@/domain/usecases'
+import { type CreateTodoRepository } from '@/data/protocols/db/todo'
 
-export class DbAddTodo implements AddTodo {
-  constructor (private readonly addTodoRepository: AddTodoRepository) {}
-  async add (params: AddTodo.Params): Promise<AddTodo.Result> {
-    await this.addTodoRepository.add(params)
+export class DbCreateTodo implements CreateTodo {
+  constructor (private readonly createTodoRepository: CreateTodoRepository) {}
+  async add (params: CreateTodo.Params): Promise<CreateTodo.Result> {
+    await this.createTodoRepository.add(params)
     return true
   }
 }

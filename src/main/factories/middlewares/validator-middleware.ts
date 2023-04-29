@@ -1,8 +1,8 @@
 import { ValidatorMiddleware } from '@/presentation/middlewares'
 import { makeSchemaValidator } from '@/main/factories/validator'
-import { addTodoSchema } from '@/presentation/schemas'
+import { createTodoSchema } from '@/presentation/schemas'
 
 export const makeCreateTodoValidatorMiddleware = (): ValidatorMiddleware => {
-  const schemaValidator = makeSchemaValidator(addTodoSchema)
+  const schemaValidator = makeSchemaValidator(createTodoSchema)
   return new ValidatorMiddleware(schemaValidator)
 }

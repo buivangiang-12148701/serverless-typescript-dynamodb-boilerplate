@@ -1,8 +1,8 @@
-import { type AddTodo } from '@/domain/usecases'
+import { type CreateTodo } from '@/domain/usecases'
 import { TodoDynamooseRepository } from '@/infra/db'
-import { DbAddTodo } from '@/data/usecases'
+import { DbCreateTodo } from '@/data/usecases'
 
-export const makeDbAddTodo = (): AddTodo => {
+export const makeDbCreateTodo = (): CreateTodo => {
   const todoDynamooseRepository = new TodoDynamooseRepository()
-  return new DbAddTodo(todoDynamooseRepository)
+  return new DbCreateTodo(todoDynamooseRepository)
 }
