@@ -13,6 +13,7 @@ export const created = <T = any> (data: T): HttpResponse => ({
   headers: {
     contentType: 'application/json'
   },
+  isBase64Encoded: false,
   body: JSON.stringify(data)
 })
 export const serverError = (error?: unknown): HttpResponse => ({
@@ -20,6 +21,7 @@ export const serverError = (error?: unknown): HttpResponse => ({
   headers: {
     contentType: 'application/json'
   },
+  isBase64Encoded: false,
   body: new ServerError(error instanceof Error ? error : undefined).toString()
 })
 
@@ -28,5 +30,6 @@ export const badRequest = (error: Error): HttpResponse => ({
   headers: {
     contentType: 'application/json'
   },
+  isBase64Encoded: false,
   body: error.toString()
 })
