@@ -1,5 +1,5 @@
-import { Connection } from '@/infra/db/dynamoose/helpers'
 import { makeCreateTodoController } from '@/main/factories/controllers'
+import { ConnectionManager } from '@/infra/db'
 
-Connection.getInstances().connect()
+ConnectionManager.getInstance().connect()
 export const createTodoHandler = makeCreateTodoController().handler

@@ -7,7 +7,6 @@ import { type CheckFunctionOptions, type ValidationError } from 'fastest-validat
 import { type FastestValidatorError } from '@/presentation/errors'
 
 describe('SchemaFastestValidatorAdapter', () => {
-  let sut: MockProxy<SchemaValidator>
   let validator: MockProxy<Validator>
   let params: SchemaValidator.Params
   let validationError: MockProxy<ValidationError>
@@ -29,7 +28,6 @@ describe('SchemaFastestValidatorAdapter', () => {
     })
     validator = mock()
     validator.compile.calledWith(params.schema).mockReturnValue(asyncCheckFunction)
-    sut = mock()
   })
 
   it('should call `compile` with correct params', async () => {
@@ -48,14 +46,6 @@ describe('SchemaFastestValidatorAdapter', () => {
 
     expect(asyncCheckFunction).toBeCalledWith(params.value)
     expect(asyncCheckFunction).toBeCalledTimes(1)
-  })
-
-  it('should returns true if validator returns true', async () => {
-    sut.validate.mockResolvedValueOnce(true)
-
-    const result = await sut.validate(params)
-
-    expect(result).toBe(true)
   })
 
   it('should return true if `check` returns true', async () => {
@@ -77,6 +67,24 @@ describe('SchemaFastestValidatorAdapter', () => {
 
     expect(result).toBeInstanceOf(Array<FastestValidatorError>)
   })
+
+  it('should call private method transformNormalizedError if `check` returns errors', async () => {
+    Object.defineProperty(SchemaFastestValidatorAdapter.prototype, 'transformNormalizedError', {
+      writable: true
+    })
+    const transformNormalizedErrorSpy = jest.spyOn(SchemaFastestValidatorAdapter.prototype as any, 'transformNormalizedError')
+    asyncCheckFunction = jest.fn((_value: any, _opts?: CheckFunctionOptions) => {
+      return [validationError]
+    })
+    validator.compile.calledWith(params.schema).mockReturnValue(asyncCheckFunction)
+
+    const sut = new SchemaFastestValidatorAdapter(validator)
+
+    const result = await sut.validate(params)
+
+    expect(transformNormalizedErrorSpy).toBeCalledTimes(1)
+    expect(result).toBeInstanceOf(Array<FastestValidatorError>)
+  })
   it('should rethrows if `check` throws', async () => {
     asyncCheckFunction = jest.fn((_value: any, _opts?: CheckFunctionOptions) => {
       throw mockError
@@ -84,22 +92,6 @@ describe('SchemaFastestValidatorAdapter', () => {
     validator.compile.calledWith(params.schema).mockReturnValue(asyncCheckFunction)
 
     const sut = new SchemaFastestValidatorAdapter(validator)
-
-    const promise = sut.validate(params)
-
-    await expect(promise).rejects.toThrow(mockError)
-  })
-
-  it('should returns list errors if validator returns error', async () => {
-    sut.validate.mockResolvedValueOnce([mockError])
-
-    const result = await sut.validate(params)
-
-    expect(result).toEqual([mockError])
-  })
-
-  it('should rethrows if validator throws', async () => {
-    sut.validate.mockRejectedValueOnce(mockError)
 
     const promise = sut.validate(params)
 
