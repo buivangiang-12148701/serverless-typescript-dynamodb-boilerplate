@@ -22,12 +22,14 @@ describe('ConnectionManager', () => {
       IS_OFFLINE: true
     })
   })
-  it('should have only one instance', async () => {
-    const sut2 = ConnectionManager.getInstance()
-    expect(sut).toBe(sut2)
+  describe('getInstance method', () => {
+    it('should have only one instance', async () => {
+      const sut2 = ConnectionManager.getInstance()
+      expect(sut).toBe(sut2)
+    })
   })
 
-  describe('connect method', () => {
+  describe('getConnection method', () => {
     it('should return a Connection instance if it exists', async () => {
       Object.defineProperty(ConnectionManager, 'connections', {
         value: [
@@ -45,6 +47,29 @@ describe('ConnectionManager', () => {
     it('should return undefined if it does not exists', async () => {
       const connection = sut.getConnection('default')
       expect(connection).toBeUndefined()
+    })
+  })
+
+  describe('connect method', () => {
+    it('should call createConnection if connection `default` does not exist', async () => {
+      const createConnectionSpy = jest.spyOn(sut, 'createConnection')
+      sut.connect()
+      expect(createConnectionSpy).toBeCalledTimes(1)
+    })
+    it('should not call createConnection if connection `default` exists', async () => {
+      Object.defineProperty(ConnectionManager, 'connections', {
+        value: [
+          {
+            name: 'default',
+            isOffline: true,
+            instance: faker.internet.avatar()
+          }
+        ],
+        writable: true
+      })
+      const createConnectionSpy = jest.spyOn(sut, 'createConnection')
+      sut.connect()
+      expect(createConnectionSpy).not.toBeCalled()
     })
   })
 
