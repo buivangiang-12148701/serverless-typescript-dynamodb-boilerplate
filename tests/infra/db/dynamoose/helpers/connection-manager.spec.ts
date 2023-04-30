@@ -43,7 +43,7 @@ describe('ConnectionManager', () => {
     })
   })
 
-  describe('getConnection method', () => {
+  describe('createConnection method', () => {
     it('should call createLocalConnection if IS_OFFLINE is true', async () => {
       envSpy.mockReturnValue({
         IS_OFFLINE: true
@@ -57,6 +57,29 @@ describe('ConnectionManager', () => {
       })
       sut.createConnection('default')
       expect(createRemoteConnectionSpy).toBeCalledTimes(1)
+    })
+    it('should create a new local connection if IS_OFFLINE is true and connection does not exists', async () => {
+      envSpy.mockReturnValue({
+        IS_OFFLINE: true
+      })
+      const connection = sut.createConnection('default')
+      expect(connection.name).toEqual('default')
+      expect(connection.isOffline).toEqual(true)
+    })
+    it('should create a new remote connection if IS_OFFLINE is false and connection does not exists', async () => {
+      envSpy.mockReturnValue({
+        IS_OFFLINE: false
+      })
+      const connection = sut.createConnection('default')
+      expect(connection.name).toEqual('default')
+      expect(connection.isOffline).toEqual(false)
+    })
+    it('should throw ConnectionNameExistsError if connection already exists', async () => {
+      envSpy.mockReturnValue({
+        IS_OFFLINE: true
+      })
+      sut.createConnection('default')
+      expect(() => sut.createConnection('default')).toThrow(new ConnectionManager.ConnectionNameExistsError())
     })
   })
 })
