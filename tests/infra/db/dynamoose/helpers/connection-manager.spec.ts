@@ -7,6 +7,7 @@ describe('ConnectionManager', () => {
   let envSpy: jest.SpyInstance
   let createLocalConnectionSpy: jest.SpyInstance
   let createRemoteConnectionSpy: jest.SpyInstance
+  let updateDynamooseSpy: jest.SpyInstance
   beforeEach(() => {
     sut = ConnectionManager.getInstance()
     Object.defineProperty(ConnectionManager, 'connections', {
@@ -16,6 +17,10 @@ describe('ConnectionManager', () => {
     envSpy = jest.spyOn(Env.prototype as any, 'getEnv')
     createLocalConnectionSpy = jest.spyOn(ConnectionManager.prototype as any, 'createLocalConnection')
     createRemoteConnectionSpy = jest.spyOn(ConnectionManager.prototype as any, 'createRemoteConnection')
+    updateDynamooseSpy = jest.spyOn(ConnectionManager.prototype as any, 'updateDynamoose')
+    envSpy.mockReturnValue({
+      IS_OFFLINE: true
+    })
   })
   it('should have only one instance', async () => {
     const sut2 = ConnectionManager.getInstance()
@@ -45,9 +50,6 @@ describe('ConnectionManager', () => {
 
   describe('createConnection method', () => {
     it('should call createLocalConnection if IS_OFFLINE is true', async () => {
-      envSpy.mockReturnValue({
-        IS_OFFLINE: true
-      })
       sut.createConnection('default')
       expect(createLocalConnectionSpy).toBeCalledTimes(1)
     })
@@ -59,9 +61,6 @@ describe('ConnectionManager', () => {
       expect(createRemoteConnectionSpy).toBeCalledTimes(1)
     })
     it('should create a new local connection if IS_OFFLINE is true and connection does not exists', async () => {
-      envSpy.mockReturnValue({
-        IS_OFFLINE: true
-      })
       const connection = sut.createConnection('default')
       expect(connection.name).toEqual('default')
       expect(connection.isOffline).toEqual(true)
@@ -75,11 +74,12 @@ describe('ConnectionManager', () => {
       expect(connection.isOffline).toEqual(false)
     })
     it('should throw ConnectionNameExistsError if connection already exists', async () => {
-      envSpy.mockReturnValue({
-        IS_OFFLINE: true
-      })
       sut.createConnection('default')
       expect(() => sut.createConnection('default')).toThrow(new ConnectionManager.ConnectionNameExistsError())
+    })
+    it('should call updateDynamoose if connection is created', async () => {
+      sut.createConnection('default')
+      expect(updateDynamooseSpy).toBeCalledTimes(1)
     })
   })
 })
