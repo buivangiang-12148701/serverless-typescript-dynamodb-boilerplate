@@ -1,4 +1,4 @@
-import { Base, baseSchema } from '@/infra/db'
+import { baseSchema, Base } from '@/infra/db'
 import * as dynamoose from 'dynamoose'
 
 jest.mock('dynamoose', () => {
@@ -13,7 +13,6 @@ jest.mock('dynamoose', () => {
       schema,
       save: jest.fn(),
       get: jest.fn()
-      // Add more methods that you need to mock here
     }
   })
 
