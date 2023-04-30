@@ -12,6 +12,7 @@ describe('SchemaFastestValidatorAdapter', () => {
   let validationError: MockProxy<ValidationError>
   let asyncCheckFunction: any
   let mockError: Error
+  let sut: SchemaValidator
 
   beforeEach(() => {
     params = {
@@ -28,11 +29,10 @@ describe('SchemaFastestValidatorAdapter', () => {
     })
     validator = mock()
     validator.compile.calledWith(params.schema).mockReturnValue(asyncCheckFunction)
+    sut = new SchemaFastestValidatorAdapter(validator)
   })
 
   it('should call `compile` with correct params', async () => {
-    const sut = new SchemaFastestValidatorAdapter(validator)
-
     await sut.validate(params)
 
     expect(validator.compile).toBeCalledWith(params.schema)
@@ -40,8 +40,6 @@ describe('SchemaFastestValidatorAdapter', () => {
   })
 
   it('should call `check` with correct params', async () => {
-    const sut = new SchemaFastestValidatorAdapter(validator)
-
     await sut.validate(params)
 
     expect(asyncCheckFunction).toBeCalledWith(params.value)
@@ -49,8 +47,6 @@ describe('SchemaFastestValidatorAdapter', () => {
   })
 
   it('should return true if `check` returns true', async () => {
-    const sut = new SchemaFastestValidatorAdapter(validator)
-
     const result = await sut.validate(params)
 
     expect(result).toBe(true)
@@ -60,9 +56,6 @@ describe('SchemaFastestValidatorAdapter', () => {
       return [validationError]
     })
     validator.compile.calledWith(params.schema).mockReturnValue(asyncCheckFunction)
-
-    const sut = new SchemaFastestValidatorAdapter(validator)
-
     const result = await sut.validate(params)
 
     expect(result).toBeInstanceOf(Array<FastestValidatorError>)
@@ -75,8 +68,6 @@ describe('SchemaFastestValidatorAdapter', () => {
     })
     validator.compile.calledWith(params.schema).mockReturnValue(asyncCheckFunction)
 
-    const sut = new SchemaFastestValidatorAdapter(validator)
-
     const result = await sut.validate(params)
 
     expect(transformNormalizedErrorSpy).toBeCalledTimes(1)
@@ -87,8 +78,6 @@ describe('SchemaFastestValidatorAdapter', () => {
       throw mockError
     })
     validator.compile.calledWith(params.schema).mockReturnValue(asyncCheckFunction)
-
-    const sut = new SchemaFastestValidatorAdapter(validator)
 
     const promise = sut.validate(params)
 
