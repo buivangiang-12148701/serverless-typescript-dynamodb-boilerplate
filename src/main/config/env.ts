@@ -1,9 +1,24 @@
-import { cleanEnv, str, num, bool } from 'envalid'
-export const Env = cleanEnv(process.env, {
-  IS_OFFLINE: bool({ default: false }),
-  REGION: str({ default: 'us-east-1' }),
-  DYNAMODB_TABLE_TODO: str({ default: 'todos' }),
-  DYNAMODB_PROTOCOL: str({ default: 'http' }),
-  DYNAMODB_HOST: str({ default: 'localhost' }),
-  DYNAMODB_PORT: num({ default: 8000 })
-})
+import { cleanEnv, str, bool, port } from 'envalid'
+
+export class Env {
+  private static instance?: Env
+
+  private constructor () {}
+  static getInstance (): Env {
+    if (Env.instance === undefined) {
+      Env.instance = new Env()
+    }
+    return Env.instance
+  }
+
+  public getEnv () {
+    return cleanEnv(process.env, {
+      IS_OFFLINE: bool({ default: true }),
+      REGION: str({ default: 'us-east-1' }),
+      DYNAMODB_TABLE_TODO: str({ default: 'todos' }),
+      DYNAMODB_PROTOCOL: str({ default: 'http' }),
+      DYNAMODB_HOST: str({ default: 'localhost' }),
+      DYNAMODB_PORT: port({ default: 8000 })
+    })
+  }
+}

@@ -69,9 +69,6 @@ describe('SchemaFastestValidatorAdapter', () => {
   })
 
   it('should call private method transformNormalizedError if `check` returns errors', async () => {
-    Object.defineProperty(SchemaFastestValidatorAdapter.prototype, 'transformNormalizedError', {
-      writable: true
-    })
     const transformNormalizedErrorSpy = jest.spyOn(SchemaFastestValidatorAdapter.prototype as any, 'transformNormalizedError')
     asyncCheckFunction = jest.fn((_value: any, _opts?: CheckFunctionOptions) => {
       return [validationError]

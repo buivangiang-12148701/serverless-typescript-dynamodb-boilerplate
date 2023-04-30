@@ -1,6 +1,6 @@
 import { type DynamoDBClientConfig } from '@aws-sdk/client-dynamodb/dist-types/DynamoDBClient'
-import { Env } from '@/main/config'
 import * as dynamoose from 'dynamoose'
+import { Env } from '@/main/config'
 
 export class ConnectionManager {
   private static instance?: ConnectionManager
@@ -26,11 +26,11 @@ export class ConnectionManager {
   }
 
   public createConnection (name: string, config?: DynamoDBClientConfig): ConnectionManager.Connection {
-    const newInstance = Env.IS_OFFLINE ? this.createLocalConnection() : this.createRemoteConnection(config)
+    const newInstance = Env.getInstance().getEnv().IS_OFFLINE ? this.createLocalConnection() : this.createRemoteConnection(config)
     const newConnection = {
       name,
       instance: newInstance,
-      isOffline: Env.IS_OFFLINE
+      isOffline: Env.getInstance().getEnv().IS_OFFLINE
     }
     const index = ConnectionManager.connections.findIndex(connection => connection.name === name)
     if (index === -1) {
@@ -42,13 +42,14 @@ export class ConnectionManager {
   }
 
   private createLocalConnection (endpoint?: string): ConnectionManager.LocalConnection {
-    return endpoint ?? `${Env.DYNAMODB_PROTOCOL}://${Env.DYNAMODB_HOST}:${Env.DYNAMODB_PORT}`
+    const { DYNAMODB_PROTOCOL, DYNAMODB_HOST, DYNAMODB_PORT } = Env.getInstance().getEnv()
+    return endpoint ?? `${DYNAMODB_PROTOCOL}://${DYNAMODB_HOST}:${DYNAMODB_PORT}`
   }
 
   private createRemoteConnection (config?: DynamoDBClientConfig): ConnectionManager.RemoteConnection {
     return (config != null)
       ? config
-      : { region: Env.REGION }
+      : { region: Env.getInstance().getEnv().REGION }
   }
 
   private updateDynamoose (): void {

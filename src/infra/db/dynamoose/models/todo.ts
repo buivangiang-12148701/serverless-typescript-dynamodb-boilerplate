@@ -8,7 +8,7 @@ export class TodoEntity extends Base {
   description!: string
 }
 
-export const tableName = Env.DYNAMODB_TABLE_TODO
+export const tableName = Env.getInstance().getEnv().DYNAMODB_TABLE_TODO
 
 const todoSchema = new dynamoose.Schema({
   ...baseSchema,
