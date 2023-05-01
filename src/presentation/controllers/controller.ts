@@ -14,7 +14,7 @@ type HookResult = {
 
 export abstract class Controller {
   handler: MiddyfiedHandler
-  protected constructor () {
+  constructor () {
     this.handler = middy(this.defineHooks())
     this.addMiddlewares()
     this.handler.handler(this.perform)
@@ -27,13 +27,6 @@ export abstract class Controller {
    */
   get middlewares (): Array<middy.MiddlewareObj<any, any, Error, any>> {
     return []
-  }
-
-  /**
-   * add dependencies for class
-   */
-  get dependencies (): Set<string> {
-    return new Set<string>()
   }
 
   /**
