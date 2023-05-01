@@ -13,7 +13,7 @@ export type HookResult = {
 }
 
 export abstract class Controller {
-  private readonly handler: MiddyfiedHandler
+  readonly handler: MiddyfiedHandler
   constructor () {
     this.handler = middy(this.defineHooks())
     this.handler.use(this.middlewares)

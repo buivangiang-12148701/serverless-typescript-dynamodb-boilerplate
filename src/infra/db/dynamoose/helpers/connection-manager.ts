@@ -27,11 +27,11 @@ export class ConnectionManager {
   }
 
   public createConnection (name: string, config?: DynamoDBClientConfig): ConnectionManager.Connection {
-    const newInstance = Env.getInstance().getEnv().IS_OFFLINE ? this.createLocalConnection() : this.createRemoteConnection(config)
+    const newInstance = Env.getInstance().getEnv().IS_OFFLINE === 'true' ? this.createLocalConnection() : this.createRemoteConnection(config)
     const newConnection = {
       name,
       instance: newInstance,
-      isOffline: Env.getInstance().getEnv().IS_OFFLINE
+      isOffline: Env.getInstance().getEnv().IS_OFFLINE === 'true'
     }
     const index = ConnectionManager.connections.findIndex(connection => connection.name === name)
     if (index === -1) {

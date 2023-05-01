@@ -1,4 +1,4 @@
-import { cleanEnv, str, bool, port } from 'envalid'
+import { cleanEnv, port, str } from 'envalid'
 
 export class Env {
   private static instance?: Env
@@ -13,7 +13,7 @@ export class Env {
 
   public getEnv () {
     return cleanEnv(process.env, {
-      IS_OFFLINE: bool({ default: true }),
+      IS_OFFLINE: str({ default: 'false' }),
       REGION: str({ default: 'us-east-1' }),
       DYNAMODB_TABLE_TODO: str({ default: 'todos' }),
       DYNAMODB_PROTOCOL: str({ default: 'http' }),

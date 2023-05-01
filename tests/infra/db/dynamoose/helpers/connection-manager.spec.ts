@@ -20,7 +20,7 @@ describe('ConnectionManager', () => {
     createRemoteConnectionSpy = jest.spyOn(ConnectionManager.prototype as any, 'createRemoteConnection')
     updateDynamooseSpy = jest.spyOn(ConnectionManager.prototype as any, 'updateDynamoose')
     envSpy.mockReturnValue({
-      IS_OFFLINE: true
+      IS_OFFLINE: 'true'
     })
     connection = {
       name: 'Test Connection',

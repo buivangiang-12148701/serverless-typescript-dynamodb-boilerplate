@@ -4,8 +4,7 @@ createTodo:
   iamRoleStatements:
     - Effect: "Allow"
       Action:
-        - dynamodb:BatchWriteItem
-        - dynamodb:CreateTable
+        - dynamodb:PutItem
       Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/${env:DYNAMODB_TABLE_TODO}"
   events:
     - httpApi:
