@@ -5,13 +5,11 @@ import { faker } from '@faker-js/faker'
 describe('CreateTodo', () => {
   let sut: MockProxy<CreateTodo>
   let params: CreateTodo.Params
-  beforeAll(() => {
+  beforeEach(() => {
     params = {
       title: faker.lorem.words(3),
       description: faker.lorem.words(10)
     }
-  })
-  beforeEach(() => {
     sut = mock()
   })
   it('should call method `add` with correct parameters', async () => {
