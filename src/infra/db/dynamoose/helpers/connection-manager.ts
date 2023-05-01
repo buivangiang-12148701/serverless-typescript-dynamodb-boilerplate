@@ -1,6 +1,7 @@
 import { type DynamoDBClientConfig } from '@aws-sdk/client-dynamodb/dist-types/DynamoDBClient'
 import * as dynamoose from 'dynamoose'
 import { Env } from '@/main/config'
+import { ConnectionNameExistsError } from '@/infra/db/dynamoose/errors'
 
 export class ConnectionManager {
   private static instance?: ConnectionManager
@@ -38,7 +39,7 @@ export class ConnectionManager {
       this.updateDynamoose()
       return newConnection
     }
-    throw new ConnectionManager.ConnectionNameExistsError()
+    throw new ConnectionNameExistsError()
   }
 
   private createLocalConnection (endpoint?: string): ConnectionManager.LocalConnection {
@@ -46,17 +47,12 @@ export class ConnectionManager {
     return endpoint ?? `${DYNAMODB_PROTOCOL}://${DYNAMODB_HOST}:${DYNAMODB_PORT}`
   }
 
-  private createRemoteConnection (config?: DynamoDBClientConfig): ConnectionManager.RemoteConnection {
-    return (config != null)
-      ? config
-      : { region: Env.getInstance().getEnv().REGION }
+  private createRemoteConnection (config: DynamoDBClientConfig = Env.getInstance().getEnv().REGION): ConnectionManager.RemoteConnection {
+    return config
   }
 
   private updateDynamoose (): void {
     const lastConnection = ConnectionManager.connections[ConnectionManager.connections.length - 1]
-    if (lastConnection === undefined) {
-      throw new ConnectionManager.ConnectionNotFoundError()
-    }
     if (lastConnection.isOffline) {
       dynamoose.aws.ddb.local(lastConnection.instance as ConnectionManager.LocalConnection)
     } else {
@@ -65,7 +61,7 @@ export class ConnectionManager {
   }
 }
 
-export namespace ConnectionManager {
+export declare namespace ConnectionManager {
   export type Connection = {
     name: string
     instance: LocalConnection | RemoteConnection
@@ -75,19 +71,4 @@ export namespace ConnectionManager {
 
   export type RemoteConnection = DynamoDBClientConfig
 
-  export class ConnectionNameExistsError extends Error {
-    constructor () {
-      super()
-      this.name = 'ConnectionNameExistsError'
-      this.message = 'Connection name already exists'
-    }
-  }
-
-  export class ConnectionNotFoundError extends Error {
-    constructor () {
-      super()
-      this.name = 'ConnectionNotFoundError'
-      this.message = 'Connection not found'
-    }
-  }
 }

@@ -1,4 +1,4 @@
-import { ConnectionManager } from '@/infra/db'
+import { ConnectionManager, ConnectionNameExistsError } from '@/infra/db'
 import { faker } from '@faker-js/faker'
 import { Env } from '@/main/config'
 
@@ -8,6 +8,7 @@ describe('ConnectionManager', () => {
   let createLocalConnectionSpy: jest.SpyInstance
   let createRemoteConnectionSpy: jest.SpyInstance
   let updateDynamooseSpy: jest.SpyInstance
+  let connection: ConnectionManager.Connection
   beforeEach(() => {
     sut = ConnectionManager.getInstance()
     Object.defineProperty(ConnectionManager, 'connections', {
@@ -21,6 +22,11 @@ describe('ConnectionManager', () => {
     envSpy.mockReturnValue({
       IS_OFFLINE: true
     })
+    connection = {
+      name: 'Test Connection',
+      instance: {},
+      isOffline: true
+    }
   })
   describe('getInstance method', () => {
     it('should have only one instance', async () => {
@@ -100,11 +106,24 @@ describe('ConnectionManager', () => {
     })
     it('should throw ConnectionNameExistsError if connection already exists', async () => {
       sut.createConnection('default')
-      expect(() => sut.createConnection('default')).toThrow(new ConnectionManager.ConnectionNameExistsError())
+      expect(() => sut.createConnection('default')).toThrow(new ConnectionNameExistsError())
     })
     it('should call updateDynamoose if connection is created', async () => {
       sut.createConnection('default')
       expect(updateDynamooseSpy).toBeCalledTimes(1)
     })
+  })
+
+  it('Connection should have properties name, instance, isOffline', async () => {
+    expect(connection.name).toBe('Test Connection')
+    expect(connection.instance).toBeDefined()
+    expect(connection.isOffline).toBe(true)
+  })
+
+  it('Connection should have value is string or undefined', async () => {
+    let localConnection: ConnectionManager.LocalConnection = faker.lorem.words(5)
+    expect(localConnection).toBeDefined()
+    localConnection = undefined
+    expect(localConnection).toBeUndefined()
   })
 })
