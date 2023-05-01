@@ -31,7 +31,12 @@ jest.mock('@/infra/db/dynamoose/schema/base-schema', () => {
 })
 
 describe('TodoSchema', () => {
-  it('should return a todo schema and extends from base schema', () => {
+  it('object should has the property "id" from baseSchema', () => {
     expect(todoSchema).toHaveProperty('id')
+  })
+  it('object should have the property "title", "description", "isCompleted"', async () => {
+    expect(todoSchema).toHaveProperty('title')
+    expect(todoSchema).toHaveProperty('description')
+    expect(todoSchema).toHaveProperty('isCompleted')
   })
 })
