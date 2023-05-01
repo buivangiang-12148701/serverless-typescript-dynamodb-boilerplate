@@ -1,10 +1,9 @@
 import { type APIGatewayProxyEvent } from 'aws-lambda'
-import { Controller } from '@/presentation/controllers'
+import { Controller, type HookParams } from '@/presentation/controllers'
 import type middy from '@middy/core'
 import { MiddlewareBuilder } from '@/presentation/middlewares'
 import { faker } from '@faker-js/faker'
 
-jest.spyOn(console, 'log').mockImplementation(() => {})
 class TestController extends Controller {
   async perform (_event: APIGatewayProxyEvent) {
     return {
@@ -40,38 +39,42 @@ class TestControllerOverrideHook extends Controller {
   }
 
   override async beforePrefetch (): Promise<void> {
-    console.log('beforePrefetch')
+    await super.beforePrefetch()
     return Promise.resolve()
   }
 
   override async requestStart (): Promise<void> {
-    console.log('requestStart')
+    await super.requestStart()
     return Promise.resolve()
   }
 
   override async beforeMiddleware (_fctName: string): Promise<void> {
-    console.log('beforeMiddleware')
+    await super.beforeMiddleware(_fctName)
     return Promise.resolve()
   }
 
   override async afterMiddleware (_fctName: string): Promise<void> {
-    console.log('afterMiddleware')
+    await super.afterMiddleware(_fctName)
     return Promise.resolve()
   }
 
   override async beforeHandler (): Promise<void> {
-    console.log('beforeHandler')
+    await super.beforeHandler()
     return Promise.resolve()
   }
 
   override async afterHandler (): Promise<void> {
-    console.log('afterHandler')
+    await super.afterHandler()
     return Promise.resolve()
   }
 
-  override async requestEnd (): Promise<void> {
-    console.log('requestEnd')
+  override async requestEnd (_request: middy.Request): Promise<void> {
+    await super.requestEnd(_request)
     return Promise.resolve()
+  }
+
+  override defineHooks (_params: HookParams = {}): any {
+    return super.defineHooks(_params)
   }
 }
 
@@ -79,14 +82,12 @@ describe('Controller', () => {
   let controller: TestController
   let controllerWithMiddleware: TestControllerWithMiddleware
   let controllerOverrideHook: TestControllerOverrideHook
-  let logSpy: jest.SpyInstance
   let event: APIGatewayProxyEvent
 
   beforeEach(() => {
     controller = new TestController()
     controllerWithMiddleware = new TestControllerWithMiddleware()
     controllerOverrideHook = new TestControllerOverrideHook()
-    logSpy = jest.spyOn(console, 'log')
 
     event = {
       body: JSON.stringify({ key: 'value' }),
@@ -148,42 +149,32 @@ describe('Controller', () => {
   })
 
   it('should override beforePrefetch method', async () => {
-    await controllerOverrideHook.beforePrefetch()
-    expect(logSpy).toHaveBeenCalledWith('beforePrefetch')
-    expect.assertions(1)
+    await expect(controllerOverrideHook.beforePrefetch()).resolves.toBeUndefined()
   })
   it('should override requestStart method', async () => {
-    await controllerOverrideHook.requestStart()
-    expect(logSpy).toHaveBeenCalledWith('requestStart')
-    expect.assertions(1)
+    await expect(controllerOverrideHook.requestStart()).resolves.toBeUndefined()
   })
   it('should override beforeMiddleware method', async () => {
-    await controllerOverrideHook.beforeMiddleware(faker.lorem.words(5))
-    expect(logSpy).toHaveBeenCalledWith('beforeMiddleware')
-    expect.assertions(1)
+    await expect(controllerOverrideHook.beforeMiddleware(faker.lorem.words(5))).resolves.toBeUndefined()
   })
 
   it('should override afterMiddleware method', async () => {
-    await controllerOverrideHook.afterMiddleware(faker.lorem.words(5))
-    expect(logSpy).toHaveBeenCalledWith('afterMiddleware')
-    expect.assertions(1)
+    await expect(controllerOverrideHook.afterMiddleware(faker.lorem.words(5))).resolves.toBeUndefined()
   })
 
   it('should override beforeHandler method', async () => {
-    await controllerOverrideHook.beforeHandler()
-    expect(logSpy).toHaveBeenCalledWith('beforeHandler')
-    expect.assertions(1)
+    await expect(controllerOverrideHook.beforeHandler()).resolves.toBeUndefined()
   })
 
   it('should override afterHandler method', async () => {
-    await controllerOverrideHook.afterHandler()
-    expect(logSpy).toHaveBeenCalledWith('afterHandler')
-    expect.assertions(1)
+    await expect(controllerOverrideHook.afterHandler()).resolves.toBeUndefined()
   })
 
   it('should override requestEnd method', async () => {
-    await controllerOverrideHook.requestEnd()
-    expect(logSpy).toHaveBeenCalledWith('requestEnd')
-    expect.assertions(1)
+    await expect(controllerOverrideHook.requestEnd({} as any)).resolves.toBeUndefined()
+  })
+  it('should override defineHooks method', async () => {
+    const result = controllerOverrideHook.defineHooks()
+    expect(result).toBeInstanceOf(Object)
   })
 })

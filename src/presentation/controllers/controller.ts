@@ -13,10 +13,10 @@ export type HookResult = {
 }
 
 export abstract class Controller {
-  handler: MiddyfiedHandler
+  private readonly handler: MiddyfiedHandler
   constructor () {
     this.handler = middy(this.defineHooks())
-    this.addMiddlewares()
+    this.handler.use(this.middlewares)
     this.handler.handler(this.perform)
   }
 
@@ -85,11 +85,6 @@ export abstract class Controller {
    */
   protected async requestEnd (_request: middy.Request): Promise<void> {
     return Promise.resolve()
-  }
-
-  private addMiddlewares (): void {
-    const middlewares = Array.isArray(this.middlewares) ? this.middlewares : [this.middlewares]
-    this.handler.use(middlewares)
   }
 
   /**
