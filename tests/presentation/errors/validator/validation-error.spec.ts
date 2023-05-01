@@ -18,6 +18,20 @@ describe('FastestValidatorError', () => {
     expect(error.message).toEqual(params.message)
   })
 
+  it('should create an instance with default message if not provided', () => {
+    const params = {
+      field: 'username',
+      type: 'required' as keyof BuiltInMessages
+    }
+
+    const error = new FastestValidatorError(params)
+
+    expect(error).toBeInstanceOf(FastestValidatorError)
+    expect(error.field).toEqual(params.field)
+    expect(error.type).toEqual(params.type)
+    expect(error.message).toEqual('')
+  })
+
   // Test toJSON method
   it('should return a JSON representation of the error', () => {
     const params = {
