@@ -1,3 +1,7 @@
+import { TodoDynamooseRepository } from '@/infra/db'
+import * as dynamoose from 'dynamoose'
+import { type CreateTodoRepository } from '@/data/protocols'
+import { faker } from '@faker-js/faker'
 
 jest.mock('dynamoose', () => {
   const Schema = jest.fn((schema) => {
@@ -5,26 +9,50 @@ jest.mock('dynamoose', () => {
   })
 
   // Mock the model function
-  const model = jest.fn((modelName, schema) => {
-    return {
-      modelName,
-      schema,
-      save: jest.fn(),
-      get: jest.fn()
-    }
-  })
+  const model = jest.fn()
 
   return {
     Schema,
     model
   }
 })
+
 describe('TodoDynamooseRepository', () => {
-  // let sut: TodoDynamooseRepository
-  // beforeEach(() => {
-  //   sut = new TodoDynamooseRepository()
-  // })
-  it('should create successfully', () => {
-    expect(true).toBeTruthy()
+  let sut: TodoDynamooseRepository
+  let params: CreateTodoRepository.Params
+  let mockModel: jest.Mock
+
+  beforeEach(() => {
+    params = {
+      title: faker.lorem.words(5),
+      description: faker.lorem.words(10)
+    }
+    mockModel = jest.fn()
+    jest.mocked(dynamoose.model).mockImplementation(mockModel)
+    sut = new TodoDynamooseRepository(mockModel)
+  })
+
+  it('should returns true if create an todo successfully', async () => {
+    mockModel.mockImplementation((model: any) => {
+      return {
+        model,
+        save: jest.fn().mockReturnValue(params),
+        get: jest.fn()
+      }
+    })
+    const result = await sut.add(params)
+    expect(result).toBeTruthy()
+  })
+
+  it('should returns false if create an todo failed', async () => {
+    mockModel.mockImplementation((model: any) => {
+      return {
+        model,
+        save: jest.fn().mockRejectedValue(new Error('any_error')),
+        get: jest.fn()
+      }
+    })
+    const result = await sut.add(params)
+    expect(result).toBeFalsy()
   })
 })

@@ -8,8 +8,7 @@ export class TodoDynamooseRepository implements CreateTodoRepository {
   async add (params: CreateTodoRepository.Params): Promise<CreateTodoRepository.Result> {
     try {
       const todoModel = new this.Model(params)
-      const result = await todoModel.save()
-      console.log('show result item: ', result)
+      await todoModel.save()
       return true
     } catch (e) {
       return false
