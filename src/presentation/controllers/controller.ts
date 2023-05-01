@@ -1,8 +1,8 @@
 import { type APIGatewayProxyEvent, type APIGatewayProxyResult, type Callback, type Context } from 'aws-lambda'
 import middy, { type MiddyfiedHandler } from '@middy/core'
 
-type HookParams = Record<string, any>
-type HookResult = {
+export type HookParams = Record<string, any>
+export type HookResult = {
   beforePrefetch: () => Promise<void>
   requestStart: () => Promise<void>
   beforeMiddleware: (fctName: string) => Promise<void>
