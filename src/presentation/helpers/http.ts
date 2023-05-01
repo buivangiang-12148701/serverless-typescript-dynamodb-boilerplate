@@ -1,5 +1,3 @@
-import { ServerError } from '@/presentation/errors'
-
 export type HttpResponse = {
   statusCode: number
   headers?: Record<string, boolean | number | string> | undefined
@@ -16,13 +14,13 @@ export const created = <T = any> (data: T): HttpResponse => ({
   isBase64Encoded: false,
   body: JSON.stringify(data)
 })
-export const serverError = (error?: unknown): HttpResponse => ({
+export const serverError = (error: Error): HttpResponse => ({
   statusCode: 500,
   headers: {
     'Content-Type': 'application/json'
   },
   isBase64Encoded: false,
-  body: new ServerError(error instanceof Error ? error : undefined).toString()
+  body: error.toString()
 })
 
 export const badRequest = (error: Error): HttpResponse => ({

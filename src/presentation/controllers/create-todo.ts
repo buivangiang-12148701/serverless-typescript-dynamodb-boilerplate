@@ -1,11 +1,11 @@
 import { Controller } from '@/presentation/controllers'
 import { type APIGatewayProxyResult, type Callback, type Context } from 'aws-lambda'
-import { MiddlewareBuilder } from '@/presentation/middlewares'
+import { MiddlewareBuilder, type Middleware } from '@/presentation/middlewares'
 import type middy from '@middy/core'
 import { type CreateTodo } from '@/domain/usecases'
 import { type EventJSON } from '@/main/types'
 import { created, serverError } from '@/presentation/helpers'
-import { type Middleware } from '@/presentation/middlewares'
+import { ServerError } from '@/presentation/errors'
 
 export class CreateTodoController extends Controller {
   private static createTodo: CreateTodo
@@ -33,9 +33,9 @@ export class CreateTodoController extends Controller {
           message: 'Todo item was created successfully'
         })
       }
-      return serverError()
+      return serverError(new ServerError())
     } catch (e) {
-      return serverError()
+      return serverError(new ServerError())
     }
   }
 }
