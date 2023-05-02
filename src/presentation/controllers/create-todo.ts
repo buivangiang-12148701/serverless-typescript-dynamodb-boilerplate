@@ -8,26 +8,25 @@ import { created, serverError } from '@/presentation/helpers'
 import { ServerError } from '@/presentation/errors'
 
 export class CreateTodoController extends Controller {
-  private static createTodo: CreateTodo
-  private static validatorMiddleware: Middleware
-  constructor (createTodo: CreateTodo, validatorMiddleware: Middleware) {
-    CreateTodoController.createTodo = createTodo
-    CreateTodoController.validatorMiddleware = validatorMiddleware
+  constructor (private readonly createTodo: CreateTodo, private readonly validatorMiddleware: Middleware) {
     super()
+    this.addMiddlewares = this.addMiddlewares.bind(this)
+    this.handler.use(this.addMiddlewares())
+    this.handler.handler(this.perform.bind(this))
   }
 
-  override get middlewares (): Array<middy.MiddlewareObj<any, any, Error, any>> {
+  override addMiddlewares (): Array<middy.MiddlewareObj<any, any, Error, any>> {
     return [
       ...MiddlewareBuilder.of()
         .withJsonBodyParser()
-        .withValidator(CreateTodoController.validatorMiddleware)
+        .withValidator(this.validatorMiddleware)
         .withSecurityHeaders().build()
     ]
   }
 
   async perform (event: EventJSON, _context: Context, _callback: Callback): Promise<APIGatewayProxyResult> {
     try {
-      const result = await CreateTodoController.createTodo.add(event.body as CreateTodo.Params)
+      const result = await this.createTodo.add(event.body as CreateTodo.Params)
       if (result) {
         return created({
           message: 'Todo item was created successfully'

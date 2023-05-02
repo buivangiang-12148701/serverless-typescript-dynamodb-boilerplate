@@ -16,8 +16,6 @@ export abstract class Controller {
   readonly handler: MiddyfiedHandler
   constructor () {
     this.handler = middy(this.defineHooks())
-    this.handler.use(this.middlewares)
-    this.handler.handler(this.perform)
   }
 
   abstract perform (event: APIGatewayProxyEvent, context: Context, callback: Callback): Promise<APIGatewayProxyResult>
@@ -25,7 +23,7 @@ export abstract class Controller {
   /**
    * add middlewares to the handler with order
    */
-  get middlewares (): Array<middy.MiddlewareObj<any, any, Error, any>> {
+  addMiddlewares (): Array<middy.MiddlewareObj<any, any, Error, any>> {
     return []
   }
 

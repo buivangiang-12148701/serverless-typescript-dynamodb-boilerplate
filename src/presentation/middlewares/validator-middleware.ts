@@ -6,16 +6,15 @@ import { BadRequestError, FastestValidatorError as FastestValidatorErrorImpl } f
 import { type Validator } from '@/presentation/validator'
 
 export class ValidatorMiddleware extends Middleware {
-  private static validator: Validator<Error[], boolean>
-  constructor (validator: Validator<Error[], boolean>) {
+  constructor (private readonly validator: Validator<Error[], boolean>) {
     super()
-    ValidatorMiddleware.validator = validator
+    this.before = this.before.bind(this)
   }
 
   override async before (request: Request<unknown, any, Error, Context>): Promise<any> {
     try {
       const body = get(request, 'event.body', {})
-      const errors = await ValidatorMiddleware.validator.validate(body)
+      const errors = await this.validator.validate(body)
       if (Array.isArray(errors)) {
         return Promise.reject(errors)
       }

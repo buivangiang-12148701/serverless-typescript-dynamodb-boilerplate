@@ -14,7 +14,7 @@ class TestController extends Controller {
 }
 
 class TestControllerWithMiddleware extends Controller {
-  override get middlewares (): Array<middy.MiddlewareObj<any, any, Error, any>> {
+  override addMiddlewares (): Array<middy.MiddlewareObj<any, any, Error, any>> {
     return [
       ...MiddlewareBuilder.of()
         .withJsonBodyParser()
@@ -141,11 +141,13 @@ describe('Controller', () => {
   })
 
   it('should have no middlewares', () => {
-    expect(controller.middlewares.length).toEqual(0)
+    const middlewares = controller.addMiddlewares()
+    expect(middlewares.length).toEqual(0)
   })
 
   it('should have 2 middlewares', () => {
-    expect(controllerWithMiddleware.middlewares.length).toEqual(2)
+    const middlewares = controllerWithMiddleware.addMiddlewares()
+    expect(middlewares.length).toEqual(2)
   })
 
   it('should override beforePrefetch method', async () => {
