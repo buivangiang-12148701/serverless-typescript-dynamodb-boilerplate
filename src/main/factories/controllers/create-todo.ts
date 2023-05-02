@@ -1,4 +1,4 @@
-import { CreateTodoController } from '@/presentation/controllers'
+import { CreateTodoController } from '@/application/controllers'
 import { makeCreateTodoValidatorMiddleware, makeDbCreateTodo } from '@/main/factories'
 
 export const makeCreateTodoController = (): CreateTodoController => {

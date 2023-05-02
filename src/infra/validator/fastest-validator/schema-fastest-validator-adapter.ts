@@ -1,4 +1,4 @@
-import { FastestValidatorError } from '@/presentation/errors/validator'
+import { FastestValidatorError } from '@/application/errors/validator'
 import type { ValidationError } from 'fastest-validator'
 import type Validator from 'fastest-validator'
 import { type SchemaValidator } from '@/validator'

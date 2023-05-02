@@ -4,7 +4,7 @@ import { faker } from '@faker-js/faker'
 import { SchemaFastestValidatorAdapter } from '@/infra/validator'
 import type Validator from 'fastest-validator'
 import { type CheckFunctionOptions, type ValidationError } from 'fastest-validator'
-import { type FastestValidatorError } from '@/presentation/errors'
+import { type FastestValidatorError } from '@/application/errors'
 
 describe('SchemaFastestValidatorAdapter', () => {
   let validator: MockProxy<Validator>

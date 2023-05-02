@@ -1,6 +1,6 @@
 import Validator from 'fastest-validator'
 import { SchemaFastestValidatorAdapter } from '@/infra/validator'
-import { SchemaRequired } from '@/presentation/validator'
+import { SchemaRequired } from '@/application/validator'
 
 export const makeSchemaRequired = (schema: object): SchemaRequired => {
   const validator = new Validator()
